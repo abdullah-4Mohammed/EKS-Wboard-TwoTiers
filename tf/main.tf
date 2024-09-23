@@ -1,30 +1,30 @@
 //creat eks cluster for wboard app
+provider "aws" {
+  region = var.aws_region
+}
 
 module "vpc" {
-  source  = "terraform-aws-modules/vpc/aws"
-  version = "~> 5.0"
+  source = "./modules/vpc"
+  vpc_name = var.vpc_name
+  cidr_block = var.vpc_cidr
+  availability_zones = var.availability_zones
+}
 
-  name = "${local.resourceName}-vpc"
-  cidr = local.vpc_cidr
+module "eks" {
+  source = "./modules/eks"
+  cluster_name = var.cluster_name
+  vpc_id = module.vpc.vpc_id
+  subnet_ids = module.vpc.subnet_ids
+}
 
-  azs             = local.azs
-  private_subnets = local.private_subnets
-  public_subnets  = local.public_subnets
-  intra_subnets   = local.intra_subnets
-
-  enable_nat_gateway = true
-
-  public_subnet_tags = {
-    "kubernetes.io/role/elb" = 1
-  }
-
-  private_subnet_tags = {
-    "kubernetes.io/role/internal-elb" = 1
-  }
+module "iam" {
+  source = "./modules/iam"
+  cluster_name = var.cluster_name
 }
 
 
 
+////
 module "eks" {
   source = "terraform-aws-modules/eks/aws"
   version = "19.15.1"
