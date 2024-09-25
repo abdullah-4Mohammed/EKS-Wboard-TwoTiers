@@ -1,23 +1,24 @@
-module "vpc" {
-  source  = "terraform-aws-modules/vpc/aws"
-  version = "~> 5.0"
 
-  name = "${local.resourceName}-vpc"
-  cidr = local.vpc_cidr
 
-  azs             = local.azs
-  private_subnets = local.private_subnets
-  public_subnets  = local.public_subnets
-  intra_subnets   = local.intra_subnets
 
-  enable_nat_gateway = true
-
-  public_subnet_tags = {
-    "kubernetes.io/role/elb" = 1
-  }
-
-  private_subnet_tags = {
-    "kubernetes.io/role/internal-elb" = 1
+resource "aws_vpc" "vpc" {
+  cidr_block = var.vpc_cidr
+  tags = {
+    Name = "eks-vpc"
   }
 }
 
+resource "aws_subnet" "subnet" {
+  count = 2
+  vpc_id            = aws_vpc.vpc.id
+  cidr_block        = cidrsubnet(aws_vpc.vpc.cidr_block, 8, count.index)
+  availability_zone = element(var.availability_zones, count.index)
+}
+
+output "vpc_id" {
+  value = aws_vpc.vpc.id
+}
+
+output "subnet_ids" {
+  value = aws_subnet.subnet[*].id
+}
