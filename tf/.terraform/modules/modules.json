@@ -1,1 +1,1 @@
-{"Modules":[{"Key":"","Source":"","Dir":"."},{"Key":"eks","Source":"./modules/eks-modules","Dir":""},{"Key":"iam","Source":"./modules/iam-modules","Dir":""},{"Key":"network","Source":"./modules/network-modules","Dir":""},{"Key":"vpc","Source":"./modules/network","Dir":"modules/network"}]}
+{"Modules":[{"Key":"","Source":"","Dir":"."},{"Key":"eks","Source":"./modules/eks-module","Dir":""},{"Key":"iam","Source":"./modules/iam-module","Dir":""},{"Key":"network","Source":"./modules/network-module","Dir":""},{"Key":"vpc","Source":"./modules/network","Dir":"modules/network"}]}
