@@ -7,12 +7,5 @@ variable "cluster_name" {
   default = "my-eks-cluster"
 }
 
-variable "subnet_ids" {
-  description = "The IDs of the subnets"
-  type        = list(string)
-}
 
-variable "role_arn" {
-  description = "The ARN of the IAM role"
-  type        = string
-}
+

@@ -4,19 +4,19 @@ provider "aws" {
 }
 
 module "network" {
-  source             = "./modules/network-module"
+  source             = "./modules/network"
   vpc_cidr           = var.vpc_cidr
   availability_zones = var.availability_zones
 }
 
 module "iam" {
-  source       = "./modules/iam-module"
+  source       = "./modules/iam"
   cluster_name = var.cluster_name
 }
 
 
 module "eks" {
-  source       = "./modules/eks-module"
+  source       = "./modules/eks"
   cluster_name = "my-eks-cluster"
   role_arn     = module.iam.role_arn  # Pass the role_arn from IAM module
   subnet_ids   = module.network.subnet_ids  # Pass the subnet_ids from the network module
