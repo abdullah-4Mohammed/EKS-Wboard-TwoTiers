@@ -4,43 +4,19 @@ provider "aws" {
 }
 
 module "network" {
-  source             = "./modules/network"
+  source             = "./modules/network-module"
   vpc_cidr           = var.vpc_cidr
   availability_zones = var.availability_zones
 }
 
-# module "iam" {
-#   source       = "./modules/iam"
-#   cluster_name = var.cluster_name
-# }
-
-resource "aws_iam_role" "eks_role" {
-  name = "${var.cluster_name}-eks-role"
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [{
-      Action = "sts:AssumeRole"
-      Principal = {
-        Service = "eks.amazonaws.com"
-      }
-      Effect = "Allow"
-    }]
-  })
-}
-
-resource "aws_iam_role_policy_attachment" "eks_policy" {
-  role       = aws_iam_role.eks_role.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
-}
-
-
-output "role_arn" {
-  value = aws_iam_role.eks_role.arn
+module "iam" {
+  source       = "./modules/iam-module"
+  cluster_name = var.cluster_name
 }
 
 
 module "eks" {
-  source       = "./modules/eks"
+  source       = "./modules/eks-module"
   cluster_name = "my-eks-cluster"
   role_arn     = module.iam.role_arn  # Pass the role_arn from IAM module
   subnet_ids   = module.network.subnet_ids  # Pass the subnet_ids from the network module
