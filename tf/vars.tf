@@ -19,7 +19,6 @@ variable "cluster_name" {
 
 
 
-
 # variable "environment" {
 #   type = string
 # }

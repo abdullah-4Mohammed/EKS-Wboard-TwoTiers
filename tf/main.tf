@@ -1,3 +1,7 @@
+//when you call a module in Terraform, everything listed other than 
+//the source are variables for that module "left side var name". These variables are essentially 
+//arguments values that you're passing into the module.
+//you need to define these vars in the module's vars.tf file.
 
 provider "aws" {
   region = "us-east-1"
