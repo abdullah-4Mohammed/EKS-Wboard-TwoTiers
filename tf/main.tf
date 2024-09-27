@@ -22,7 +22,8 @@ module "iam" {
 module "eks" {
   source       = "./modules/eks"
   cluster_name = "my-eks-cluster"
-  role_arn     = module.iam.role_arn  # Pass the role_arn from IAM module
+  eks_role_arn     = module.iam.eks_role_arn  # Pass the role_arn from IAM module
+  node_role_arn    = module.iam.node_role_arn # Pass the role_arn from IAM module
   subnet_ids   = module.network.subnet_ids  # Pass the subnet_ids from the network module
 }
 

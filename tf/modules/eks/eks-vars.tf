@@ -7,7 +7,12 @@ variable "cluster_name" {
   default = "my-eks-cluster"
 }
 
-variable "role_arn" {
+variable "eks_role_arn" {
+  description = "The ARN of the IAM role"
+  type        = string
+}
+
+variable "node_role_arn" {
   description = "The ARN of the IAM role"
   type        = string
 }

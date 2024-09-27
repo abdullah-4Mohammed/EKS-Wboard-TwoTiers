@@ -1,6 +1,6 @@
 resource "aws_eks_cluster" "eks" {
   name     = var.cluster_name
-  role_arn = var.role_arn
+  role_arn = var.eks_role_arn
 
   vpc_config {
     subnet_ids = var.subnet_ids
@@ -10,7 +10,7 @@ resource "aws_eks_cluster" "eks" {
 resource "aws_eks_node_group" "eks_nodes" {
   cluster_name    = aws_eks_cluster.eks.name
   node_group_name = "${var.cluster_name}-node-group"
-  node_role_arn   = var.role_arn
+  node_role_arn   = var.node_role_arn
   subnet_ids      = var.subnet_ids
 
   scaling_config {
