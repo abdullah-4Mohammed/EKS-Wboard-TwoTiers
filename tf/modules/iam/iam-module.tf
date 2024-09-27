@@ -29,13 +29,16 @@ resource "aws_iam_role" "node_role" {
 resource "aws_iam_policy" "eks_policy" {
   name        = "my-eks-policy"
   description = "EKS policy"
-  policy      = file("./policy/eks_policy.json")
+  policy      = file("${path.module}/policy/eks_policy.json")
 }
 
+//The ${path.module} in Terraform refers to the directory of the module 
+//where it is being called. while ./ refers to the directory where the 
+//module has been called which is the main.tf file in this case.
 resource "aws_iam_policy" "node_policy" {
   name        = "my-node-policy"
   description = "Node policy"
-  policy      = file("./policy/node_policy.json")
+  policy      = file("./modules/iam/policy/node_policy.json")
 }
 
 resource "aws_iam_role_policy_attachment" "eks_policy" {
