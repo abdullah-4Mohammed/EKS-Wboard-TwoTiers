@@ -26,22 +26,6 @@ resource "aws_iam_role" "node_role" {
   })
 }
 
-# resource "aws_iam_policy" "eks_policy" {
-#   name        = "my-eks-policy"
-#   description = "EKS policy"
-#   policy      = file("${path.module}/policy/eks_policy.json")
-# }
-
-# //The ${path.module} in Terraform refers to the directory of the module 
-# //where it is being called. while ./ refers to the directory where the 
-# //module has been called which is the main.tf file in this case.
-# resource "aws_iam_policy" "node_policy" {
-#   name        = "my-node-policy"
-#   description = "Node policy"
-#   policy      = file("./modules/iam/policy/node_policy.json")
-# }
-
-
 resource "aws_iam_role_policy_attachment" "node_worker_policy" {
   role       = aws_iam_role.node_role.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
@@ -61,16 +45,6 @@ resource "aws_iam_role_policy_attachment" "eks_policy" {
   role       = aws_iam_role.eks_role.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
 }
-
-# resource "aws_iam_role_policy_attachment" "eks_policy" {
-#   role       = aws_iam_role.eks_role.name
-#   policy_arn = aws_iam_policy.eks_policy.arn
-# }
-
-# resource "aws_iam_role_policy_attachment" "node_policy" {
-#   role       = aws_iam_role.node_role.name
-#   policy_arn = aws_iam_policy.node_policy.arn
-# }
 
 output "eks_role_arn" {
   value = aws_iam_role.eks_role.arn
@@ -102,4 +76,30 @@ output "node_role_arn" {
 
 # output "role_arn" {
 #   value = aws_iam_role.eks_role.arn
+# }
+
+
+# resource "aws_iam_policy" "eks_policy" {
+#   name        = "my-eks-policy"
+#   description = "EKS policy"
+#   policy      = file("${path.module}/policy/eks_policy.json")
+# }
+
+# //The ${path.module} in Terraform refers to the directory of the module 
+# //where it is being called. while ./ refers to the directory where the 
+# //module has been called which is the main.tf file in this case.
+# resource "aws_iam_policy" "node_policy" {
+#   name        = "my-node-policy"
+#   description = "Node policy"
+#   policy      = file("./modules/iam/policy/node_policy.json")
+# }
+
+# resource "aws_iam_role_policy_attachment" "eks_policy" {
+#   role       = aws_iam_role.eks_role.name
+#   policy_arn = aws_iam_policy.eks_policy.arn
+# }
+
+# resource "aws_iam_role_policy_attachment" "node_policy" {
+#   role       = aws_iam_role.node_role.name
+#   policy_arn = aws_iam_policy.node_policy.arn
 # }
