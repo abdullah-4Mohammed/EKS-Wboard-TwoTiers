@@ -1,14 +1,14 @@
 
 # Security Group for EKS Cluster (control plane)
 resource "aws_security_group" "eks_cluster_sg" {
-  vpc_id = aws_vpc.vpc.id
+  vpc_id = var.vpc_id
 
   # Allow traffic between nodes in the cluster
   ingress {
     from_port   = 0
     to_port     = 65535
     protocol    = "tcp"
-    cidr_blocks = [aws_vpc.vpc.cidr_block] # Allow traffic from within the VPC
+    cidr_blocks =  [var.vpc_cidr] # Allow traffic from within the VPC
   }
 
   # Allow Kubernetes API access
@@ -16,7 +16,7 @@ resource "aws_security_group" "eks_cluster_sg" {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = [aws_vpc.vpc.cidr_block]
+    cidr_blocks = [var.vpc_cidr] # Allow traffic from within the VPC
   }
 
   # Allow SSH access (optional, change as needed)
@@ -35,7 +35,7 @@ resource "aws_security_group" "eks_cluster_sg" {
 
 # Security Group for EKS Node Group
 resource "aws_security_group" "eks_node_sg" {
-  vpc_id = aws_vpc.vpc.id
+  vpc_id = var.vpc_id
 
   # Allow traffic between nodes in the cluster
   ingress {
@@ -68,7 +68,7 @@ resource "aws_eks_cluster" "eks" {
   role_arn = var.eks_role_arn
 
   vpc_config {
-    subnet_ids = var.private_subnet_ids[*].id
+    subnet_ids = var.private_subnet_ids
     security_group_ids = [aws_security_group.eks_cluster_sg.id] # Attach the control plane security group
   }
 }
@@ -77,7 +77,7 @@ resource "aws_eks_node_group" "eks_nodes" {
   cluster_name    = aws_eks_cluster.eks.name
   node_group_name = "${var.cluster_name}-node-group"
   node_role_arn   = var.node_role_arn
-  subnet_ids      = var.private_subnet_ids[*].id
+  subnet_ids      = var.private_subnet_ids
 
   scaling_config {
     desired_size = 2
