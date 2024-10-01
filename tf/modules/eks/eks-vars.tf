@@ -17,8 +17,14 @@ variable "node_role_arn" {
   type        = string
 }
 
-variable "subnet_ids" {
-  description = "The IDs of the subnets"
+
+variable "private_subnet_ids" {
+  description = "List of private subnet IDs for EKS worker nodes"
+  type        = list(string)
+}
+
+variable "public_subnet_ids" {
+  description = "List of public subnet IDs for the EKS control plane"
   type        = list(string)
 }
 

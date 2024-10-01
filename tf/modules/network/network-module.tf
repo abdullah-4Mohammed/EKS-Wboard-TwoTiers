@@ -8,7 +8,8 @@ resource "aws_vpc" "vpc" {
 
 # The cidrsubnet function in Terraform is used to divide a larger network 
 # CIDR block into smaller subnet CIDR blocks. The function takes three arguments: 
-# the original CIDR block like /16, the new bit mask like /24, and the subnet number.
+# the original CIDR block like /16, the new bit mask like 8 which make it /24, and the subnet number.
+# the count.index will be 0 and 1 for the two subnets like 10.0 and 10.1.
 resource "aws_subnet" "private_subnet" {
   count = 2
   vpc_id            = aws_vpc.vpc.id
@@ -24,7 +25,7 @@ resource "aws_subnet" "private_subnet" {
 resource "aws_subnet" "public_subnet" {
   count = 2
   vpc_id            = aws_vpc.vpc.id
-  cidr_block        = cidrsubnet(aws_vpc.vpc.cidr_block, 24, count.index)
+  cidr_block        = cidrsubnet(aws_vpc.vpc.cidr_block, 8, count.index+2)
   availability_zone = element(var.availability_zones, count.index)
 
   map_public_ip_on_launch = true # Auto-assign public IPs
@@ -69,6 +70,10 @@ output "vpc_id" {
   value = aws_vpc.vpc.id
 }
 
-output "subnet_ids" {
+output "private_subnet_ids" {
   value = aws_subnet.private_subnet[*].id
+}
+
+output "public_subnet_ids" {
+  value = aws_subnet.public_subnet[*].id
 }
