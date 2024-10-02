@@ -25,6 +25,7 @@ steps:
     backendAwsBucket: '$(backendBucket)'
     backendAwsKey: 'tf/$(environment).tfstate'
     allowTelemetryCollection: true
+    commandOptions: '-input=false -reconfigure'
 
 - task: TerraformCLI@2 
   displayName: 'Terraform plan'
