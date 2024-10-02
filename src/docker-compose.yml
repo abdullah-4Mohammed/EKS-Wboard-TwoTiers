@@ -1,0 +1,10 @@
+version: "2.0"
+services:
+  spacedeck:
+    build: .
+    container_name: spacedeck
+    ports:
+      - "9666:9666"
+    volumes:
+      - ./storage:/app/storage
+      - ./database:/app/database

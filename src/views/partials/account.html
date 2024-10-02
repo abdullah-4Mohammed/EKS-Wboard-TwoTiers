@@ -1,0 +1,184 @@
+<header id="dialog-header" class="header" v-if="(active_view == 'account' && user)" v-cloak>
+  <div v-cloak class="header-left pull-left">
+    <a class="btn btn-dark btn-md btn-round btn-icon" href="/spaces">
+      <span class="icon icon-svg icon-sd6"></span>
+    </a>
+    <h5><%=__('edit_account')%></h5>
+  </div>
+
+  <div class="header-right pull-right">
+    <a class="btn btn-dark btn-md btn-round btn-icon" href="/spaces">
+      <span class="icon icon-cross-0"></span>
+    </a>
+  </div>
+
+</header>
+
+<div class="dialog-freestanding dialog in" v-if="active_view == 'account' && user" v-cloak>
+
+  <div class="dialog-tabs" style="margin:auto">
+    <div class="dialog-tab" v-bind:class="{open:account=='profile'}" v-on:click="account='profile'"><span><%=__("profile_caption")%></span></div>
+    <div class="dialog-tab" v-bind:class="{open:account=='language'}" v-on:click="account='language'"><span><%=__("language_caption")%></span></div>
+    <div class="dialog-tab" v-bind:class="{open:account=='notifications'}" v-on:click="account='notifications'"><span><%=__("notifications_caption")%></span></div>
+    <div class="dialog-tab" v-bind:class="{open:account=='password'}" v-on:click="account='password'"><span><%=__("password_caption")%></span></div>
+    <div class="dialog-tab" v-bind:class="{open:account=='terminate'}" v-on:click="account='terminate'"><span><%=__("terminate_caption")%></span></div>
+  </div>
+
+  <div class="dialog-section text-left">
+    <div class="collapse" v-bind:class="{in:account=='profile'}">
+      <div class="labels-inline relative" style="margin-bottom:40px">
+        <div class="form-group">
+          <div id="profile-image" class="img loaded pull-left" style="margin-right: 50px;">
+
+            <span id="profile-thumbnail" class="btn btn-xl btn-darken btn-icon btn-round" v-bind:style="{'background-image':'url('+user.avatar_thumb_uri+')'}">
+              <span class="icon icon-user" v-if="!user.avatar_thumb_uri"></span>
+            </span>
+
+            <span class="spinner"></span>
+            <button id="remove-profile-image" class="btn btn-xs btn-dark btn-round btn-icon" v-on:click="delete_user_avatar_image()" v-if="has_avatar_image(user)">
+              <span class="icon icon-cross-3"></span>
+            </button>
+          </div>
+
+          <div class="pull-left">
+            <div class="form-group">
+              <label class="file btn btn-md btn-darken" style="margin-right: 5px;">
+                <input type="file" v-on:change="save_user_avatar_image(this)">
+                <span v-if="!uploading_avatar"><%=__("upload_avatar")%></span>
+                <span v-if="uploading_avatar"><%=__("uploading_avatar")%></span>
+              </label>
+
+              <p class="message"><%=__("avatar_dimensions")%></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="form-group">
+          <label class="label">API Token</label>
+          <input
+          type="text"
+          id="api-token"
+          class="input input-white no-b"
+          v-model="user.api_token"
+          placeholder="secret key">
+        </div>
+
+        <div class="form-group">
+          <label class="label" ><%=__("profile_name")%></label>
+          <input type="text" id="user-nickname"
+          pattern=".{3,}"
+          required title="3 characters minimum"
+          class="input input-white no-b" data-i18n="[placeholder]account.username.input"
+          v-model="user.nickname" placeholder="Choose a username">
+        </div>
+
+        <div class="form-group">
+          <label class="label"><%=__("profile_email")%></label>
+          <input
+          type="email"
+          id="new-email"
+          class="input input-white no-b"
+          v-model="user.email"
+          v-on:change="user.email_changed=true"
+          placeholder="mail@example.com">
+        </div>
+
+        <div class="form-group">
+          <button class="btn btn-md btn-dark" v-on:click="save_user()"><%=__('save')%></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="collapse" v-bind:class="{in:account=='language'}">
+      <div class="modal-section">
+        <label class="radio" v-bind:class="{checked
+        : user.prefs_language=='en'}" v-on:click="save_user_language('en')">
+          <input type="radio" id="user-preferences_language" name="language" value="en"><span>English</span>
+        </label>
+        <hr/>
+        <label class="radio" v-bind:class="{checked: user.prefs_language=='de'}" v-on:click="save_user_language('de')">
+          <input type="radio" id="user-preferences_language" name="language" value="de"><span>Deutsch</span>
+        </label>
+        <hr/>
+        <label class="radio" v-bind:class="{checked: user.prefs_language=='fr'}" v-on:click="save_user_language('fr')">
+          <input type="radio" id="user-preferences_language" name="language" value="fr"><span>Français</span>
+        </label>
+        <label class="radio" v-bind:class="{checked: user.prefs_language=='oc'}" v-on:click="save_user_language('oc')">
+          <input type="radio" id="user-preferences_language" name="language" value="oc"><span>Occitan</span>
+        </label>
+        <label class="radio" v-bind:class="{checked: user.prefs_language=='es'}" v-on:click="save_user_language('es')">
+          <input type="radio" id="user-preferences_language" name="language" value="es"><span>Español</span>
+        </label>
+        <label class="radio" v-bind:class="{checked: user.prefs_language=='hu'}" v-on:click="save_user_language('hu')">
+          <input type="radio" id="user-preferences_language" name="language" value="hu"><span>Magyar</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="collapse" v-bind:class="{in:account=='notifications'}">
+      <div class="modal-section labels-inline">
+        <div class="form-group">
+          <label class="checkbox"
+            v-bind:class="{checked: user.prefs_email_notifications}"
+            v-on:click="account_save_user_notifications(!user.prefs_email_notifications);">
+            <span><%=__('notifications_option_chat')%></span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="collapse" v-bind:class="{in:account=='password'}">
+      <h4>Change Password</h4>
+      <div class="modal-section labels-inline">
+        <div class="form-group">
+          <label class="label"><%=__("current_password")%></label>
+          <input id="current-password" class="input input-white no-b" v-model="password_change_current" type="password">
+        </div>
+        <div class="form-group">
+          <label class="label"><%=__("new_password")%></label>
+          <input id="new-password" class="input input-white no-b" v-model="password_change_new" type="password">
+        </div>
+        <div class="form-group">
+          <label class="label"><%=__("verify_password")%></label>
+          <input id="new-password-confirmation" class="input input-white no-b" v-model="password_change_new_confirmation" type="password">
+        </div>
+
+        <div class="center alert alert-danger" v-if="password_change_error">{{password_change_error}}</div>
+      </div>
+
+      <div class="modal-footer">
+          <button
+            class="btn btn-dark btn-md"
+            v-on:click="save_user_password(password_change_current, password_change_new, password_change_new_confirmation);" >
+            <%=__("change_password")%>
+          </button>
+      </div>
+    </div>
+
+    <div class="collapse" v-bind:class="{in:account=='terminate'}">
+      <h4><%=__('terminate_caption')%></h4>
+      <div class="modal-section labels-inline">
+        <div class="form-group">
+          <label class="label"><%=__("current_password")%></label>
+          <input v-model="account_remove_password" class="input input-white no-b" type="password">
+        </div>
+        
+        <div class="form-group">
+          <label class="label"><%=__("terminate_reason")%></label>
+          <textarea class="input input-white no-b" v-model="account_remove_feedback"></textarea>
+          <p class="message"><%=__("terminate_reason_caption")%></p>
+        </div>
+      </div>
+      
+      <div class="modal-section labels-inline">
+        <div class="center alert alert-danger" v-if="account_remove_error">{{account_remove_error}}</div>
+      </div>
+      
+      <div class="modal-footer">
+        <button class="btn btn-stroke-darken btn-md" v-on:click="remove_account(account_remove_password, account_remove_feedback)"><%=__('terminate_caption')%></button>
+      </div>
+    </div>
+  </div>
+</div>

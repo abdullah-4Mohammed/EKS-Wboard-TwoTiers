@@ -1,0 +1,91 @@
+@import "vars";
+@import "mixins";
+
+.header-center,
+.header-left,
+.header-right {
+  position: absolute;
+  @include backface-visibility(hidden);
+  z-index: 3000;
+  top: 10px;
+  
+  > * {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  &.out {
+    opacity: 0;
+    pointer-events: none;
+    * {
+      pointer-events: none !important;
+    }
+  }
+}
+
+.home {
+  margin-top: -20px;
+  margin-left: -20px;
+}
+
+.header-left { 
+    left: 0; 
+    padding-left: 10px; 
+    padding-left: 20px;
+    padding-top: 20px;
+}
+.header-right {
+    right: 0; 
+    padding-right: 20px;
+    padding-top: 20px;
+}
+
+.header-center {
+  width: 100%;
+  left: 0;
+  right: 0;
+  position: absolute;
+  text-align: center;
+  color: $medium;
+  > * {
+    font-size: 20px;
+    line-height: 44px;
+    color: $medium;
+    padding: 0 10px;
+  }
+}
+.header-left > * { margin-right: 10px; }
+.header-right > * { margin-left: 10px; }
+.header-right { font-size: 0;}
+
+.title {
+  width: 100%;
+  left: 0;
+  position: absolute;
+  text-align: center;
+  pointer-events: none;
+
+  h1 {
+    margin: 0;
+    height: 60px;
+    line-height: 60px;
+    font-size: $font-size*0.75;
+    // text-transform: uppercase;
+    font-weight: bold;
+    color: $medium;
+    display: inline-block;
+    margin-top: -14px;
+    pointer-events: all;
+    font-weight: normal;
+  }
+}
+
+.author {
+  float: left;
+  .btn {
+    margin-right: 10px;
+  }
+  .author-date {
+    opacity: 0.5;
+  }
+}
