@@ -1,6 +1,6 @@
 # AWS Region
-variable "aws_region" {
-  default = "us-east-1"
+variable "region" {
+  default = "eu-west-2"
 }
 
 variable "cluster_name" {

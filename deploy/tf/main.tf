@@ -3,9 +3,9 @@
 //arguments values that you're passing into the module.
 //you need to define these vars in the module's vars.tf file.
 
-provider "aws" {
-  region = "us-east-1"
-}
+# provider "aws" {
+#   region = "us-east-1"
+# }
 
 module "network" {
   source             = "./modules/network"

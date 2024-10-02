@@ -1,6 +1,6 @@
 # AWS Region
-variable "aws_region" {
-  default = "us-east-1"
+variable "region" {
+  default = "eu-west-2"
 }
 
 # VPC (network module) variables
@@ -9,5 +9,5 @@ variable "vpc_cidr" {
 }
 
 variable "availability_zones" {
-  default = ["us-east-1a", "us-east-1b"]
+  default = ["eu-west-2a", "eu-west-2b"]
 }
