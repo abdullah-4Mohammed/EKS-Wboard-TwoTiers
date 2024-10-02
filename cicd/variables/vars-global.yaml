@@ -2,7 +2,8 @@ variables:
   region: 'eu-west-2'
   awsConnection: "AzToAWS"
   backendBucketName: "backend-tfstate"
-  backendBucket: "eks-wboard-backend-tfstate-euw2"
+  backendBucket: "$(serviceName)-$(backendBucketName)-$(environment)-$(regionShortName)"
   regionShortName: euw2
   serviceName: eks-wboard
   environment: nonprod
+  ecrName: "$(serviceName)-$(environment)-$(regionShortName)"

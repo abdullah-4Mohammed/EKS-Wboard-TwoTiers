@@ -8,17 +8,17 @@ steps:
     awsCommand: 's3api'
     awsSubCommand: 'create-bucket'
     awsArguments: >-
-      --bucket "$(serviceName)-$(backendBucketName)-$(regionShortName)" 
+      --bucket "$(backendBucket)" 
       --region $(region)
       --create-bucket-configuration "{\"LocationConstraint\":\"$(region)\"}"
 # the --create-bucket-configuration cant be in us-east-1 but it nessary if you are using other region
 
 
-# - task: AWSCLI@1
-#   displayName: Create an ECR
-#   inputs:
-#     awsCredentials: '$(awsConnection)'
-#     regionName: 'eu-west-2'
-#     awsCommand: 'ecr'
-#     awsSubCommand: 'create-repository'
-#     awsArguments: '--repository-name $(ecrName)'
+- task: AWSCLI@1
+  displayName: Create an ECR
+  inputs:
+    awsCredentials: '$(awsConnection)'
+    regionName: 'eu-west-2'
+    awsCommand: 'ecr'
+    awsSubCommand: 'create-repository'
+    awsArguments: '--repository-name $(ecrName)'
