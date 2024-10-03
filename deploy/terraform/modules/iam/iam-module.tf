@@ -1,5 +1,5 @@
 resource "aws_iam_role" "eks_role" {
-  name = "${var.cluster_name}-eks-role"
+  name = "${var.cluster_name}-eks-role-${var.regionShortName}"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
@@ -13,7 +13,7 @@ resource "aws_iam_role" "eks_role" {
 }
 
 resource "aws_iam_role" "node_role" {
-  name = "${var.cluster_name}-node-role"
+  name = "${var.cluster_name}-node-role-${var.regionShortName}"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{

@@ -1,13 +1,17 @@
 # AWS Region
 variable "region" {
-  default = "eu-west-2"
+  type = string
 }
 
 # VPC (network module) variables
 variable "vpc_cidr" {
-  default = "10.0.0.0/16"
+  type = string
 }
 
 variable "availability_zones" {
-  default = ["eu-west-2a", "eu-west-2b"]
+  type = list(string)
+}
+
+variable "serviceName" {
+  type = string
 }

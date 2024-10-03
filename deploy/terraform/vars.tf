@@ -14,7 +14,7 @@ variable "availability_zones" {
 
 # EKS (eks module) variables
 variable "cluster_name" {
-  default = "my-eks-cluster"
+  default = "Eks-${var.serviceName}"
 }
 
 
@@ -23,7 +23,7 @@ variable "environment" {
   type = string
 }
 
-variable "serviceShortName" {
+variable "serviceName" {
   type = string
 }
 
@@ -37,7 +37,7 @@ variable "regionShortName" {
 }
 
 locals {
-  resourceName = "${var.serviceShortName}-${var.environment}-${var.regionShortName}"
+  resourceName = "${var.serviceName}-${var.environment}-${var.regionShortName}"
   key = "tf/${var.environment}.tfstate"
   region = "${var.region}"
   backendBucket = "${var.backendBucket}"

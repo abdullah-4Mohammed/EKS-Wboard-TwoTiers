@@ -11,11 +11,13 @@ module "network" {
   source             = "./modules/network"
   vpc_cidr           = var.vpc_cidr
   availability_zones = var.availability_zones
+  serviceName        = var.serviceName
 }
 
 module "iam" {
   source       = "./modules/iam"
   cluster_name = var.cluster_name
+  serviceName = var.serviceName
 }
 
 
@@ -28,7 +30,7 @@ module "eks" {
   private_subnet_ids  = module.network.private_subnet_ids # Pass the subnet_ids from the network module
   vpc_id              = module.network.vpc_id             # Pass the vpc_id from the network module
   vpc_cidr      = var.vpc_cidr     # Pass the vpc_cidr_block from the network module
-
+  serviceName = var.serviceName
 }
 
 

@@ -1,10 +1,10 @@
 # AWS Region
 variable "region" {
-  default = "eu-west-2"
+  type = string
 }
 
 variable "cluster_name" {
-  default = "my-eks-cluster"
+  default = "Eks-${var.serviceName}"
 }
 
 variable "eks_role_arn" {
@@ -37,4 +37,7 @@ variable "public_subnet_ids" {
   type        = list(string)
 }
 
+variable "serviceName" {
+  type = string
+}
 

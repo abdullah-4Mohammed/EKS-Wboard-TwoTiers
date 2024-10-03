@@ -1,22 +1,28 @@
 # AWS Region
-variable "aws_region" {
-  default = "eu-west-2"
+variable "region" {
+  type = string
 }
 
 # VPC (network module) variables
 variable "vpc_cidr" {
-  default = "10.0.0.0/16"
+  type = string
 }
 
 variable "availability_zones" {
-  default = ["eu-west-2a", "eu-west-2b"]
+  type = list(string)
 }
 
 # EKS (eks module) variables
 variable "cluster_name" {
-  default = "my-eks-cluster"
+  type = string
 }
 
+variable "serviceName" {
+  type = string
+}
 
+variable "regionShortName" {
+  type = string
+}
 
 

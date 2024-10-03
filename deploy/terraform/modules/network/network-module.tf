@@ -2,7 +2,7 @@
 resource "aws_vpc" "vpc" {
   cidr_block = var.vpc_cidr
   tags = {
-    Name = "eks-vpc"
+    Name = "${var.serviceName}-vpc"
   }
 }
 
@@ -16,7 +16,7 @@ resource "aws_subnet" "private_subnet" {
   cidr_block        = cidrsubnet(aws_vpc.vpc.cidr_block, 8, count.index)
   availability_zone = element(var.availability_zones, count.index)
   tags = {
-    Name = "eks-subnet-${count.index}"
+    Name = "${var.serviceName}-private-subnet-${count.index}"
     "kubernetes.io/role/elb" = "1"
   }
 }
@@ -31,7 +31,7 @@ resource "aws_subnet" "public_subnet" {
   map_public_ip_on_launch = true # Auto-assign public IPs
 
   tags = {
-    Name = "eks-public-subnet-${count.index}"
+    Name = "${var.serviceName}-public-subnet-${count.index}"
     "kubernetes.io/role/elb" = "1"
   }
 }
@@ -40,7 +40,7 @@ resource "aws_subnet" "public_subnet" {
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.vpc.id
   tags = {
-    Name = "eks-igw"
+    Name = "${var.serviceName}-eks-igw"
   }
 }
 
@@ -52,7 +52,7 @@ resource "aws_route_table" "public_route_table" {
     gateway_id = aws_internet_gateway.igw.id
   }
   tags = {
-    Name = "eks-public-route-table"
+    Name = "${var.serviceName}-eks-public-route-table"
   }
 }
 
@@ -61,16 +61,25 @@ resource "aws_route_table_association" "public_route_assoc" {
   count          = 2
   subnet_id      = aws_subnet.public_subnet[count.index].id
   route_table_id = aws_route_table.public_route_table.id
+
+  
 }
 
 
 resource "aws_eip" "nat" {
+
+  tags = {
+    Name = "${var.serviceName}-eks-nat-eip"
+  }
   
 }
 
 resource "aws_nat_gateway" "nat" {
   allocation_id = aws_eip.nat.id
   subnet_id     = aws_subnet.public_subnet[0].id
+  tags = {
+    Name = "${var.serviceName}-eks-nat-gateway"
+  }
 }
 
 resource "aws_route_table" "private_route_table" {
@@ -81,6 +90,7 @@ resource "aws_route" "private_nat_gateway" {
   route_table_id         = aws_route_table.private_route_table.id
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id         = aws_nat_gateway.nat.id
+
 }
 
 resource "aws_route_table_association" "private_route_assoc" {
