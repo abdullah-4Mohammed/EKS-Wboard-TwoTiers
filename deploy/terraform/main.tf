@@ -12,18 +12,23 @@ module "network" {
   vpc_cidr           = var.vpc_cidr
   availability_zones = var.availability_zones
   serviceName        = var.serviceName
+  region             = var.region
 }
 
 module "iam" {
   source       = "./modules/iam"
   cluster_name = var.cluster_name
   serviceName = var.serviceName
+  region = var.region
+  vpc_cidr = var.vpc_cidr
+  regionShortName = var.regionShortName
+  availability_zones = var.availability_zones
 }
 
 
 module "eks" {
   source       = "./modules/eks"
-  cluster_name = "my-eks-cluster"
+  cluster_name = var.cluster_name
   eks_role_arn     = module.iam.eks_role_arn  # Pass the role_arn from IAM module
   node_role_arn    = module.iam.node_role_arn # Pass the role_arn from IAM module
   public_subnet_ids   = module.network.public_subnet_ids  # Pass the subnet_ids from the network module
@@ -31,6 +36,8 @@ module "eks" {
   vpc_id              = module.network.vpc_id             # Pass the vpc_id from the network module
   vpc_cidr      = var.vpc_cidr     # Pass the vpc_cidr_block from the network module
   serviceName = var.serviceName
+  region = var.region
+
 }
 
 

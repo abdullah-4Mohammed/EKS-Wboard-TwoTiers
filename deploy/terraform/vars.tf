@@ -1,6 +1,6 @@
 # AWS Region
 variable "region" {
-  default = "eu-west-2"
+  type = string
 }
 
 # VPC (network module) variables
@@ -9,7 +9,7 @@ variable "vpc_cidr" {
 }
 
 variable "availability_zones" {
-  default = ["eu-west-2a", "eu-west-2b"]
+  type = list(string)
 }
 
 # EKS (eks module) variables
@@ -40,7 +40,7 @@ variable "regionShortName" {
 locals {
   resourceName = "${var.serviceName}-${var.environment}-${var.regionShortName}"
   key = "tf/${var.environment}.tfstate"
-  region = "${var.region}"
+  //region = "${var.region}"
   backendBucket = "${var.backendBucket}"
 }
 
