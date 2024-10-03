@@ -8,4 +8,4 @@ serviceName = "__serviceName__"
 region = "__region__"
 backendBucket = "__backendBucket__"
 
-cluster_name = "Eks-${var.serviceName}"
+cluster_name = "Eks"
