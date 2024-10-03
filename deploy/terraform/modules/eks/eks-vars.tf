@@ -4,7 +4,7 @@ variable "region" {
 }
 
 variable "cluster_name" {
-  default = "Eks-${var.serviceName}"
+  type = string
 }
 
 variable "eks_role_arn" {

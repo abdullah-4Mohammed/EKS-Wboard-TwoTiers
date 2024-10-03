@@ -14,7 +14,8 @@ variable "availability_zones" {
 
 # EKS (eks module) variables
 variable "cluster_name" {
-  default = "Eks-${var.serviceName}"
+  type = string
+  
 }
 
 
