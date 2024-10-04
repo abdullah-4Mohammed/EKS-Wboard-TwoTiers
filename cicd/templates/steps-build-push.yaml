@@ -2,7 +2,7 @@ steps:
 - task: Docker@2
   displayName: Build and push an image to container registry
   inputs:
-    containerRegistry: 'AzToAWS' #$(dockerRegistryServiceConnection)
+    containerRegistry: $(dockerRegistryServiceConnection)
     repository: $(imageRepository)/wbapp
     command: buildAndPush
     dockerfile: $(dockerFile)
