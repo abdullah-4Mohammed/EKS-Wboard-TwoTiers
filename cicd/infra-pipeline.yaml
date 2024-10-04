@@ -10,6 +10,7 @@ trigger:
     - src
     - cicd/templates/steps-deploy-tf.yaml
     - cicd/infra-pipeline.yaml
+    - cicd/templates/steps-build-push.yaml
 
 pool: 
   vmImage: 'ubuntu-latest'
