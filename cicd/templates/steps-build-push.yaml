@@ -1,13 +1,19 @@
 // build and bush docker image step
 steps:
-
 - task: Docker@2
   displayName: Build and push an image to container registry
   inputs:
-    command: buildAndPush
-    repository: $(imageRepository)/wbapp
-    dockerfile: $(dockerFile)
     containerRegistry: $(dockerRegistryServiceConnection)
+    repository: $(imageRepository)/wbapp
+    command: buildAndPush
+    dockerfile: $(dockerFile)
     tags: |
       $(Build.BuildId)
       latest
+
+# - task: Docker@2
+#   inputs:
+#     containerRegistry: 'ecr-docker-sercon'
+#     repository: 'gfgf'
+#     command: 'buildAndPush'
+#     Dockerfile: '**/Dockerfile'
