@@ -9,10 +9,3 @@ steps:
     tags: |
       $(Build.BuildId)
       latest
-
-# - task: Docker@2
-#   inputs:
-#     containerRegistry: 'ecr-docker-sercon'
-#     repository: 'gfgf'
-#     command: 'buildAndPush'
-#     Dockerfile: '**/Dockerfile'

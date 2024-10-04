@@ -7,6 +7,6 @@ variables:
   serviceName: eks-wboard
   environment: nonprod
   ecrName: "$(serviceName)-$(environment)-$(regionShortName)"
-  imageRepository: "390402557273.dkr.ecr.eu-west-2.amazonaws.com/eks-wboard-nonprod-euw2"
+  imageRepository: "eks-wboard-nonprod-euw2"
   dockerFile: "$(System.DefaultWorkingDirectory)/src/Dockerfile"
   dockerRegistryServiceConnection: "ecr-docker-sercon"
