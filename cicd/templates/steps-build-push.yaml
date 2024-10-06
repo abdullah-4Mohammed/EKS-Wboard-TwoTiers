@@ -7,8 +7,8 @@ steps:
     command: build 
     dockerfile: $(dockerFile)
     tags: |
-      latest
       $(Build.BuildId)
+      latest
     
 - task: ECRPushImage@1
   displayName: Push to ECR
@@ -20,6 +20,6 @@ steps:
     sourceImageTags: 'latest'
     repositoryName: $(imageRepository)
     imageTag: |
-      latest
       $(Build.BuildId)
+      latest
      
