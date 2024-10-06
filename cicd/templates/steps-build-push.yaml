@@ -6,6 +6,8 @@ steps:
     repository: $(imageRepository)/wbapp
     command: build 
     dockerfile: $(dockerFile)
+    tags: |
+      latest
     
 - task: ECRPushImage@1
   displayName: Push to ECR
