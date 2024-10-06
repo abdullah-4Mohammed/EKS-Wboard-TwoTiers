@@ -19,6 +19,7 @@ steps:
     sourceImageName: '390402557273.dkr.ecr.eu-west-2.amazonaws.com/$(imageRepository)/wbapp'
     sourceImageTags: 'latest'
     repositoryName: $(imageRepository)
-    imageTags: |
-      $(Build.BuildId)
+    imageTag: |
       latest
+      $(Build.BuildId)
+     
