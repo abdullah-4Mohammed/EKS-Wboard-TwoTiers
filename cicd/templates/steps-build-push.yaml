@@ -8,6 +8,7 @@ steps:
     dockerfile: $(dockerFile)
     tags: |
       latest
+      $(Build.BuildId)
     
 - task: ECRPushImage@1
   displayName: Push to ECR
