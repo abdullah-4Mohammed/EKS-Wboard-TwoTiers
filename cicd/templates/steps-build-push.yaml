@@ -24,7 +24,7 @@ steps:
   inputs:
     awsCredentials: $(awsConnection)
     regionName: $(region)
-    imageSource: 'image'
+    imageSource: 'imagename'
     sourceImageName: '$(imageRepository)/wbapp:$(Build.BuildId)'
     repositoryName: $(imageRepository)/wbapp
     imageTag: |
