@@ -4,9 +4,27 @@ steps:
   inputs:
     containerRegistry: $(dockerRegistryServiceConnection)
     repository: $(imageRepository)/wbapp
-    command: buildAndPush
+    command: build 
     dockerfile: $(dockerFile)
     tags: |
       $(Build.BuildId)
       latest
 
+#push to ecr task
+- task: ECRPushImage@1
+  inputs:
+    awsCredentials: ''
+    regionName: ''
+    imageSource: ''
+    sourceImageName: ''
+    repositoryName: ''
+
+- task: ECRPushImage@1
+  displayName: Push to ECR
+  inputs:
+    awsCredentials: $(awsConnection)
+    regionName: $(region)
+    repositoryName: $(imageRepository)/wbapp
+    imageTag: |
+      $(Build.BuildId)
+      latest
