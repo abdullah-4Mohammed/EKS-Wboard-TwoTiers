@@ -16,7 +16,8 @@ steps:
     regionName: $(region)
     imageSource: 'imagename'
     sourceImageName: '390402557273.dkr.ecr.eu-west-2.amazonaws.com/$(imageRepository)/wbapp'
-    repositoryName: $(imageRepository)/wbapp
+    sourceImageTags: 'latest'
+    repositoryName: $(imageRepository)
     imageTag: |
       $(Build.BuildId)
       latest
