@@ -10,15 +10,6 @@ steps:
       $(Build.BuildId)
       latest
 
-#push to ecr task
-- task: ECRPushImage@1
-  inputs:
-    awsCredentials: ''
-    regionName: ''
-    imageSource: ''
-    sourceImageName: ''
-    repositoryName: ''
-
 - task: ECRPushImage@1
   displayName: Push to ECR
   inputs:
