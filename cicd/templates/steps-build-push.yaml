@@ -6,17 +6,14 @@ steps:
     repository: $(imageRepository)/wbapp
     command: build 
     dockerfile: $(dockerFile)
-    tags: |
-      $(Build.BuildId)
-      latest
-
+    
 - task: ECRPushImage@1
   displayName: Push to ECR
   inputs:
     awsCredentials: $(awsConnection)
     regionName: $(region)
     imageSource: 'imagename'
-    sourceImageName: '$(imageRepository)/wbapp:$(Build.BuildId)'
+    sourceImageName: '$(imageRepository)/wbapp'
     repositoryName: $(imageRepository)/wbapp
     imageTag: |
       $(Build.BuildId)
