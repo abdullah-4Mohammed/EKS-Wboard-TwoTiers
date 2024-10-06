@@ -15,7 +15,7 @@ steps:
   inputs:
     awsCredentials: $(awsConnection)
     regionName: $(region)
-    imageSource: 'wbapp'
+    imageSource: 'imagenamewithtag'
     sourceImageName: '390402557273.dkr.ecr.eu-west-2.amazonaws.com/$(imageRepository)/wbapp'
     sourceImageTags: '$(Build.BuildId)'
     
