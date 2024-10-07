@@ -25,15 +25,26 @@ steps:
 #       latest
      
 - task: AWSCLI@1
-  displayName: 'Push to ECR'
+  displayName: 'Get ECR login password'
   inputs:
     awsCredentials: '$(awsConnection)'
     regionName: '$(region)'
     awsCommand: 'ecr'
     awsSubCommand: 'get-login-password'
-    awsArguments: >-
-      --region $(region) | docker login --username AWS --password-stdin 390402557273.dkr.ecr.eu-west-2.amazonaws.com && \
-      docker tag $(imageRepository)/wbapp:$(Build.BuildId) 390402557273.dkr.ecr.eu-west-2.amazonaws.com/$(imageRepository)/wbapp:$(Build.BuildId) && \
-      docker tag $(imageRepository)/wbapp:$(Build.BuildId) 390402557273.dkr.ecr.eu-west-2.amazonaws.com/$(imageRepository)/wbapp:latest && \
-      docker push 390402557273.dkr.ecr.eu-west-2.amazonaws.com/$(imageRepository)/wbapp:$(Build.BuildId) && \
-      docker push 390402557273.dkr.ecr.eu-west-2.amazonaws.com/$(imageRepository)/wbapp:latest
+    awsArguments: '--region $(region)'
+    scriptLocation: 'inline'
+    inlineScript: |
+      PASSWORD=$(aws ecr get-login-password --region $(region))
+      echo $PASSWORD | docker login --username AWS --password-stdin $(awsAccountId).dkr.ecr.$(region).amazonaws.com
+
+- script: |
+    docker tag $(imageRepository)/wbapp:$(Build.BuildId) $(awsAccountId).dkr.ecr.$(region).amazonaws.com/$(imageRepository)/wbapp:$(Build.BuildId)
+    docker push $(awsAccountId).dkr.ecr.$(region).amazonaws.com/$(imageRepository)/wbapp:$(Build.BuildId)
+  displayName: 'Push image to ECR'
+
+- script: |
+    docker tag $(imageRepository)/wbapp:$(Build.BuildId) $(awsAccountId).dkr.ecr.$(region).amazonaws.com/$(imageRepository)/wbapp:latest
+    docker push $(awsAccountId).dkr.ecr.$(region).amazonaws.com/$(imageRepository)/wbapp:latest
+  displayName: 'Push image to ECR'
+
+
