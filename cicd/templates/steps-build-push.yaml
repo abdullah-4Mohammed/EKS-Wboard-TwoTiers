@@ -10,17 +10,30 @@ steps:
       $(Build.BuildId)
       
     
-- task: ECRPushImage@1
-  displayName: Push to ECR
-  inputs:
-    awsCredentials: $(awsConnection)
-    regionName: $(region)
-    imageSource: 'imagenamewithtag'
-    sourceImageName: '390402557273.dkr.ecr.eu-west-2.amazonaws.com/$(imageRepository)/wbapp'
-    sourceImageTags: '$(Build.BuildId)'
+# - task: ECRPushImage@1
+#   displayName: Push to ECR
+#   inputs:
+#     awsCredentials: $(awsConnection)
+#     regionName: $(region)
+#     imageSource: 'imagenamewithtag'
+#     sourceImageName: '390402557273.dkr.ecr.eu-west-2.amazonaws.com/$(imageRepository)/wbapp'
+#     sourceImageTags: '$(Build.BuildId)'
     
-    repositoryName: $(imageRepository)
-    imageTag: |
-      $(Build.BuildId)
-      latest
+#     repositoryName: $(imageRepository)
+#     imageTag: |
+#       $(Build.BuildId)
+#       latest
      
+- task: AWSCLI@1
+  displayName: 'Push to ECR'
+  inputs:
+    awsCredentials: '$(awsConnection)'
+    regionName: '$(region)'
+    awsCommand: 'ecr'
+    awsSubCommand: 'get-login-password'
+    awsArguments: >-
+      --region $(region) | docker login --username AWS --password-stdin 390402557273.dkr.ecr.eu-west-2.amazonaws.com && \
+      docker tag $(imageRepository)/wbapp:$(Build.BuildId) 390402557273.dkr.ecr.eu-west-2.amazonaws.com/$(imageRepository)/wbapp:$(Build.BuildId) && \
+      docker tag $(imageRepository)/wbapp:$(Build.BuildId) 390402557273.dkr.ecr.eu-west-2.amazonaws.com/$(imageRepository)/wbapp:latest && \
+      docker push 390402557273.dkr.ecr.eu-west-2.amazonaws.com/$(imageRepository)/wbapp:$(Build.BuildId) && \
+      docker push 390402557273.dkr.ecr.eu-west-2.amazonaws.com/$(imageRepository)/wbapp:latest
