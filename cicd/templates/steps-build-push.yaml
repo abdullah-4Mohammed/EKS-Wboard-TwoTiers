@@ -2,7 +2,6 @@ steps:
 - task: Docker@2
   displayName: Build Docker image
   inputs:
-    containerRegistry: $(dockerRegistryServiceConnection)
     repository: $(imageRepository)/wbapp
     command: build
     dockerfile: $(dockerFile)
@@ -21,7 +20,9 @@ steps:
     inlineScript: |
       PASSWORD=$(aws ecr get-login-password --region $(region))
       echo $PASSWORD | docker login --username AWS --password-stdin $(awsAccountId).dkr.ecr.$(region).amazonaws.com
-
+      docker images
+      docker tag $(awsAccountId).dkr.ecr.$(region).amazonaws.com/$(imageRepository)/wbapp:$(Build.BuildId) $(awsAccountId).dkr.ecr.$(region).amazonaws.com/$(imageRepository)/wbapp:$(Build.BuildId)
+      docker push $(awsAccountId).dkr.ecr.$(region).amazonaws.com/$(imageRepository)/wbapp:$(Build.BuildId)
 - script: |
     # Ensure the image exists before pushing
     docker images
