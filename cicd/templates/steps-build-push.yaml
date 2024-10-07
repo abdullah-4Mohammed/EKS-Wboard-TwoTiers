@@ -8,20 +8,8 @@ steps:
     tags: |
       $(Build.BuildId)
 
-# - task: AWSCLI@1
-#   displayName: 'Get ECR login password'
-#   inputs:
-#     awsCredentials: '$(awsConnection)'
-#     regionName: '$(region)'
-#     awsCommand: 'ecr'
-#     awsSubCommand: 'get-login-password'
-#     awsArguments: '--region $(region)'
-#     scriptLocation: 'inline'
-#     inlineScript: |
-#       PASSWORD=$(aws ecr get-login-password --region $(region))
-#       echo $PASSWORD | docker login --username AWS --password-stdin $(awsAccountId).dkr.ecr.$(region).amazonaws.com
 - task: AWSCLI@1
-  displayName: 'Get ECR login password and push Docker image'
+  displayName: 'Get ECR login password'
   inputs:
     awsCredentials: '$(awsConnection)'
     regionName: '$(region)'
@@ -30,16 +18,13 @@ steps:
     awsArguments: '--region $(region)'
     scriptLocation: 'inline'
     inlineScript: |
-      set -ex
       PASSWORD=$(aws ecr get-login-password --region $(region))
       echo $PASSWORD | docker login --username AWS --password-stdin $(awsAccountId).dkr.ecr.$(region).amazonaws.com
-      docker tag $(awsAccountId).dkr.ecr.$(region).amazonaws.com/$(imageRepository)/wbapp:$(Build.BuildId) $(awsAccountId).dkr.ecr.$(region).amazonaws.com/$(imageRepository)/wbapp:$(Build.BuildId)
-      docker push $(awsAccountId).dkr.ecr.$(region).amazonaws.com/$(imageRepository)/wbapp:$(Build.BuildId)
-      docker tag $(awsAccountId).dkr.ecr.$(region).amazonaws.com/$(imageRepository)/wbapp:$(Build.BuildId) $(awsAccountId).dkr.ecr.$(region).amazonaws.com/$(imageRepository)/wbapp:latest
-      docker push $(awsAccountId).dkr.ecr.$(region).amazonaws.com/$(imageRepository)/wbapp:latest      
-      
+ 
 - script: |
-    # Ensure the image exists before pushing
+    set -ex
+    PASSWORD=$(aws ecr get-login-password --region $(region))
+    echo $PASSWORD | docker login --username AWS --password-stdin $(awsAccountId).dkr.ecr.$(region).amazonaws.com
     docker images
     docker tag $(awsAccountId).dkr.ecr.$(region).amazonaws.com/$(imageRepository)/wbapp:$(Build.BuildId) $(awsAccountId).dkr.ecr.$(region).amazonaws.com/$(imageRepository)/wbapp:$(Build.BuildId)
     docker push $(awsAccountId).dkr.ecr.$(region).amazonaws.com/$(imageRepository)/wbapp:$(Build.BuildId)
