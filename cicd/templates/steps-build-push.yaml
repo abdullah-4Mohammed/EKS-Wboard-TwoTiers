@@ -25,14 +25,14 @@ steps:
 - script: |
     # Ensure the image exists before pushing
     docker images
-    docker tag $(imageRepository)/wbapp:$(Build.BuildId) $(awsAccountId).dkr.ecr.$(region).amazonaws.com/$(imageRepository)/wbapp:$(Build.BuildId)
+    docker tag $(awsAccountId).dkr.ecr.$(region).amazonaws.com/$(imageRepository)/wbapp:$(Build.BuildId) $(awsAccountId).dkr.ecr.$(region).amazonaws.com/$(imageRepository)/wbapp:$(Build.BuildId)
     docker push $(awsAccountId).dkr.ecr.$(region).amazonaws.com/$(imageRepository)/wbapp:$(Build.BuildId)
   displayName: 'Push image to ECR'
 
 - script: |
     # Ensure the image exists before pushing
     docker images
-    docker tag $(imageRepository)/wbapp:$(Build.BuildId) $(awsAccountId).dkr.ecr.$(region).amazonaws.com/$(imageRepository)/wbapp:latest
+    docker tag $(awsAccountId).dkr.ecr.$(region).amazonaws.com/$(imageRepository)/wbapp:$(Build.BuildId) $(awsAccountId).dkr.ecr.$(region).amazonaws.com/$(imageRepository)/wbapp:latest
     docker push $(awsAccountId).dkr.ecr.$(region).amazonaws.com/$(imageRepository)/wbapp:latest
   displayName: 'Push latest image to ECR'
 
