@@ -7,6 +7,7 @@ steps:
     dockerfile: $(dockerFile)
     tags: |
       $(Build.BuildId)
+      latest
 
 - task: ECRPushImage@1
   displayName: Push to ECR
@@ -14,7 +15,7 @@ steps:
     awsCredentials: $(awsConnection)
     regionName: $(region)
     imageSource: 'imagename'
-    sourceImageName: '390402557273.dkr.ecr.eu-west-2.amazonaws.com/$(imageRepository)/wbapp'
+    sourceImageName: '390402557273.dkr.ecr.eu-west-2.amazonaws.com/$(imageRepository)/wbapp:$(Build.BuildId)'
     sourceImageTags: '$(Build.BuildId)'   
     repositoryName: $(imageRepository)
     imageTag: |
