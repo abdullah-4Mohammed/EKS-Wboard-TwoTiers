@@ -1,29 +1,14 @@
 steps:
 - task: Docker@2
-  displayName: Build and push an image to container registry
+  displayName: Build Docker image
   inputs:
     containerRegistry: $(dockerRegistryServiceConnection)
     repository: $(imageRepository)/wbapp
-    command: build 
+    command: build
     dockerfile: $(dockerFile)
     tags: |
       $(Build.BuildId)
-      
-    
-# - task: ECRPushImage@1
-#   displayName: Push to ECR
-#   inputs:
-#     awsCredentials: $(awsConnection)
-#     regionName: $(region)
-#     imageSource: 'imagenamewithtag'
-#     sourceImageName: '390402557273.dkr.ecr.eu-west-2.amazonaws.com/$(imageRepository)/wbapp'
-#     sourceImageTags: '$(Build.BuildId)'
-    
-#     repositoryName: $(imageRepository)
-#     imageTag: |
-#       $(Build.BuildId)
-#       latest
-     
+
 - task: AWSCLI@1
   displayName: 'Get ECR login password'
   inputs:
@@ -38,13 +23,30 @@ steps:
       echo $PASSWORD | docker login --username AWS --password-stdin $(awsAccountId).dkr.ecr.$(region).amazonaws.com
 
 - script: |
+    # Ensure the image exists before pushing
+    docker images
     docker tag $(imageRepository)/wbapp:$(Build.BuildId) $(awsAccountId).dkr.ecr.$(region).amazonaws.com/$(imageRepository)/wbapp:$(Build.BuildId)
     docker push $(awsAccountId).dkr.ecr.$(region).amazonaws.com/$(imageRepository)/wbapp:$(Build.BuildId)
   displayName: 'Push image to ECR'
 
 - script: |
+    # Ensure the image exists before pushing
+    docker images
     docker tag $(imageRepository)/wbapp:$(Build.BuildId) $(awsAccountId).dkr.ecr.$(region).amazonaws.com/$(imageRepository)/wbapp:latest
     docker push $(awsAccountId).dkr.ecr.$(region).amazonaws.com/$(imageRepository)/wbapp:latest
-  displayName: 'Push image to ECR'
+  displayName: 'Push latest image to ECR'
 
 
+# - task: ECRPushImage@1
+#   displayName: Push to ECR
+#   inputs:
+#     awsCredentials: $(awsConnection)
+#     regionName: $(region)
+#     imageSource: 'imagenamewithtag'
+#     sourceImageName: '390402557273.dkr.ecr.eu-west-2.amazonaws.com/$(imageRepository)/wbapp'
+#     sourceImageTags: '$(Build.BuildId)'
+    
+#     repositoryName: $(imageRepository)
+#     imageTag: |
+#       $(Build.BuildId)
+#       latest
