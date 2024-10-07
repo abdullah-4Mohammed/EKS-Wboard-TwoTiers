@@ -2,52 +2,65 @@ steps:
 - task: Docker@2
   displayName: Build Docker image
   inputs:
-    repository: $(imageRepository)/wbapp
+    repository: wbapp
     command: build
     dockerfile: $(dockerFile)
     tags: |
       $(Build.BuildId)
 
-- task: AWSCLI@1
-  displayName: 'Get ECR login password'
+- task: ECRPushImage@1
+  displayName: Push to ECR
   inputs:
-    awsCredentials: '$(awsConnection)'
-    regionName: '$(region)'
-    awsCommand: 'ecr'
-    awsSubCommand: 'get-login-password'
-    awsArguments: '--region $(region)'
-    scriptLocation: 'inline'
-    inlineScript: |
-      PASSWORD=$(aws ecr get-login-password --region $(region))
-      echo $PASSWORD | docker login --username AWS --password-stdin $(awsAccountId).dkr.ecr.$(region).amazonaws.com
- 
-- script: |
-    set -ex
-    PASSWORD=$(aws ecr get-login-password --region $(region))
-    echo $PASSWORD | docker login --username AWS --password-stdin $(awsAccountId).dkr.ecr.$(region).amazonaws.com
-    docker images
-    docker tag $(awsAccountId).dkr.ecr.$(region).amazonaws.com/$(imageRepository)/wbapp:$(Build.BuildId) $(awsAccountId).dkr.ecr.$(region).amazonaws.com/$(imageRepository)/wbapp:$(Build.BuildId)
-    docker push $(awsAccountId).dkr.ecr.$(region).amazonaws.com/$(imageRepository)/wbapp:$(Build.BuildId)
-  displayName: 'Push image to ECR'
+    awsCredentials: $(awsConnection)
+    regionName: $(region)
+    imageSource: 'imagename'
+    sourceImageName: '390402557273.dkr.ecr.eu-west-2.amazonaws.com/$(imageRepository)/wbapp'
+    sourceImageTags: '$(Build.BuildId)'   
+    repositoryName: $(imageRepository)
+    imageTag: |
+      $(Build.BuildId)
+      latest
 
-- script: |
-    # Ensure the image exists before pushing
-    docker images
-    docker tag $(awsAccountId).dkr.ecr.$(region).amazonaws.com/$(imageRepository)/wbapp:$(Build.BuildId) $(awsAccountId).dkr.ecr.$(region).amazonaws.com/$(imageRepository)/wbapp:latest
-    docker push $(awsAccountId).dkr.ecr.$(region).amazonaws.com/$(imageRepository)/wbapp:latest
-  displayName: 'Push latest image to ECR'
-
-
-# - task: ECRPushImage@1
-#   displayName: Push to ECR
+# - task: AWSCLI@1
+#   displayName: 'Get ECR login password'
 #   inputs:
-#     awsCredentials: $(awsConnection)
-#     regionName: $(region)
-#     imageSource: 'imagenamewithtag'
-#     sourceImageName: '390402557273.dkr.ecr.eu-west-2.amazonaws.com/$(imageRepository)/wbapp'
-#     sourceImageTags: '$(Build.BuildId)'
+#     awsCredentials: '$(awsConnection)'
+#     regionName: '$(region)'
+#     awsCommand: 'ecr'
+#     awsSubCommand: 'get-login-password'
+#     awsArguments: '--region $(region)'
+#     scriptLocation: 'inline'
+#     inlineScript: |
+#       PASSWORD=$(aws ecr get-login-password --region $(region))
+#       echo $PASSWORD | docker login --username AWS --password-stdin $(awsAccountId).dkr.ecr.$(region).amazonaws.com
+ 
+# - script: |
+#     set -ex
+#     PASSWORD=$(aws ecr get-login-password --region $(region))
+#     echo $PASSWORD | docker login --username AWS --password-stdin $(awsAccountId).dkr.ecr.$(region).amazonaws.com
+#     docker images
+#     docker tag $(awsAccountId).dkr.ecr.$(region).amazonaws.com/$(imageRepository)/wbapp:$(Build.BuildId) $(awsAccountId).dkr.ecr.$(region).amazonaws.com/$(imageRepository)/wbapp:$(Build.BuildId)
+#     docker push $(awsAccountId).dkr.ecr.$(region).amazonaws.com/$(imageRepository)/wbapp:$(Build.BuildId)
+#   displayName: 'Push image to ECR'
+
+# - script: |
+#     # Ensure the image exists before pushing
+#     docker images
+#     docker tag $(awsAccountId).dkr.ecr.$(region).amazonaws.com/$(imageRepository)/wbapp:$(Build.BuildId) $(awsAccountId).dkr.ecr.$(region).amazonaws.com/$(imageRepository)/wbapp:latest
+#     docker push $(awsAccountId).dkr.ecr.$(region).amazonaws.com/$(imageRepository)/wbapp:latest
+#   displayName: 'Push latest image to ECR'
+
+
+# # - task: ECRPushImage@1
+# #   displayName: Push to ECR
+# #   inputs:
+# #     awsCredentials: $(awsConnection)
+# #     regionName: $(region)
+# #     imageSource: 'imagenamewithtag'
+# #     sourceImageName: '390402557273.dkr.ecr.eu-west-2.amazonaws.com/$(imageRepository)/wbapp'
+# #     sourceImageTags: '$(Build.BuildId)'
     
-#     repositoryName: $(imageRepository)
-#     imageTag: |
-#       $(Build.BuildId)
-#       latest
+# #     repositoryName: $(imageRepository)
+# #     imageTag: |
+# #       $(Build.BuildId)
+# #       latest
