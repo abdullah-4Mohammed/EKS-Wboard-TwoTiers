@@ -9,6 +9,11 @@ steps:
       $(Build.BuildId)
       latest
 
+- script: |
+    set -ex
+    docker images
+  displayName: 'Display image name'
+
 - task: ECRPushImage@1
   displayName: Push to ECR
   inputs:
