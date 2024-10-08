@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
       - name: wbapp
-        image: $(imageUrl) # replace with your Docker image
+        image: 390402557273.dkr.ecr.eu-west-2.amazonaws.com/eks-wboard-nonprod-euw2:wbapp-357 #$(imageUrl) # replace with your Docker image
         ports:
         - containerPort: 80
