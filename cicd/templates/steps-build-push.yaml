@@ -22,7 +22,7 @@ steps:
     imageSource: 'imagename'
     sourceImageName: '$(imageRepository)/wbapp'
     sourceImageTags: '$(Build.BuildId)'   
-    repositoryName: $(imageRepository)
+    repositoryName: $(imageRepository)/wbapp
     imageTag: $(Build.BuildId)
       
       
