@@ -24,7 +24,9 @@ steps:
     sourceImageName: '$(imageRepository)/wbapp'
     sourceImageTag: '$(Build.BuildId)'   
     repositoryName: $(imageRepository)
-    pushTag: "wbapp-$(Build.BuildId)"
+    pushTag: |
+    "wbapp-$(Build.BuildId)"
+    latest
       
 # - task: ECRPushImage@1
 #   inputs:
