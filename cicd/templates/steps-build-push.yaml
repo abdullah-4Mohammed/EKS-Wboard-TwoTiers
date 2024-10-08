@@ -2,7 +2,7 @@ steps:
 - task: Docker@2
   displayName: Build Docker image
   inputs:
-    repository: $(imageRepository)wbapp
+    repository: $(imageRepository)/wbapp
     command: build
     dockerfile: $(dockerFile)
     tags: |
