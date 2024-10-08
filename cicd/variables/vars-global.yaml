@@ -11,3 +11,5 @@ variables:
   dockerFile: "$(System.DefaultWorkingDirectory)/src/Dockerfile"
   dockerRegistryServiceConnection: "ecr-docker-sercon"
   awsAccountId: "390402557273"
+  clusterName: "eks-wboard-nonprod"
+  imageUrl: "$(awsAccountId).dkr.ecr.$(region).amazonaws.com/$(imageRepository):latest"

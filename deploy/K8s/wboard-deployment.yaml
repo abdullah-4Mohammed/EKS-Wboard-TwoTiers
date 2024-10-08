@@ -1,33 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: wboard-deployment
-  labels:
-    app: wboard
+  name: wbapp-deployment
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
-      app: wboard
+      app: wbapp
   template:
     metadata:
       labels:
-        app: wboard
+        app: wbapp
     spec:
       containers:
-      - name: wboard
-        image: <>
+      - name: wbapp
+        image: $(imageUrl) # replace with your Docker image
         ports:
-        - containerPort: 9666
-        volumeMounts:
-        - name: storage-volume
-          mountPath: /app/storage
-        - name: database-volume
-          mountPath: /app/database
-      volumes:
-      - name: storage-volume
-        persistentVolumeClaim:
-          claimName: storage-pvc
-      - name: database-volume
-        persistentVolumeClaim:
-          claimName: database-pvc
+        - containerPort: 80

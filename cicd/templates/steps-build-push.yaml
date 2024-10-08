@@ -36,3 +36,18 @@ steps:
     sourceImageTag: '$(Build.BuildId)'   
     repositoryName: $(imageRepository)
     pushTag: latest
+
+- task: AWSCLI@1
+  displayName: Update kubeconfig
+  inputs:
+    awsCredentials: '$(awsConnection)'
+    regionName: '$(region)'
+    awsCommand: 'eks'
+    awsSubCommand: 'update-kubeconfig'
+    awsArguments: '--name $(clusterName) --region $(region)'
+
+- script: |
+    set -ex
+    kubectl apply -f $(System.DefaultWorkingDirectory)/deploy/K8s/wboard-deployment.yaml
+    kubectl apply -f $(System.DefaultWorkingDirectory)/deploy/K8s/wboard-service.yaml
+  displayName: Deploy to wbapp to EKS
