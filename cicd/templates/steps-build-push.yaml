@@ -22,11 +22,19 @@ steps:
     regionName: $(region)
     imageSource: 'imagename'
     sourceImageName: '$(imageRepository)/wbapp'
-    sourceImageTags: '$(Build.BuildId)'   
+    sourceImageTag: '$(Build.BuildId)'   
     repositoryName: $(imageRepository)
-    imageTag: "wbapp-$(Build.BuildId)"
+    pushTag: "wbapp-$(Build.BuildId)"
       
-      
+# - task: ECRPushImage@1
+#   inputs:
+#     awsCredentials: 'AzToAWS'
+#     regionName: 'ap-northeast-3'
+#     imageSource: 'imagename'
+#     sourceImageName: 'hh'
+#     sourceImageTag: 'stag'
+#     repositoryName: 'tartREPONAME'
+#     pushTag: 'kuuu'
 
 
 
