@@ -27,6 +27,7 @@ steps:
       $(Build.BuildId)
       latest
 
+
 # - task: AWSCLI@1
 #   displayName: 'Get ECR login password'
 #   inputs:
