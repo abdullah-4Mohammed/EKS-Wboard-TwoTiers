@@ -23,7 +23,11 @@ steps:
     sourceImageName: '$(imageRepository)/wbapp'
     sourceImageTags: '$(Build.BuildId)'   
     repositoryName: $(imageRepository)
-    imageTag: [$(Build.BuildId), latest]
+    imageTag: |
+      $(Build.BuildId)
+      
+      
+
 
 
 # - task: AWSCLI@1
