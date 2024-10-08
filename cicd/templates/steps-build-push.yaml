@@ -24,10 +24,19 @@ steps:
     sourceImageName: '$(imageRepository)/wbapp'
     sourceImageTag: '$(Build.BuildId)'   
     repositoryName: $(imageRepository)
-    pushTag: |
-      "wbapp-$(Build.BuildId)"
-      latest
-      
+    pushTag: "wbapp-$(Build.BuildId)"
+
+- task: ECRPushImage@1
+  displayName: Push to ECR 'latest' tag
+  inputs:
+    awsCredentials: $(awsConnection)
+    regionName: $(region)
+    imageSource: 'imagename'
+    sourceImageName: '$(imageRepository)/wbapp'
+    sourceImageTag: '$(Build.BuildId)'   
+    repositoryName: $(imageRepository)
+    pushTag: "latest"
+
 # - task: ECRPushImage@1
 #   inputs:
 #     awsCredentials: 'AzToAWS'
