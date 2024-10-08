@@ -12,6 +12,7 @@ steps:
 - script: |
     set -ex
     docker images
+    echo "buildid $(Build.BuildId)"
   displayName: 'Display image name'
 
 - task: ECRPushImage@1
