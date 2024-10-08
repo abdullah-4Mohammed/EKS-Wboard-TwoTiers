@@ -5,7 +5,7 @@
   "host": "::",
   "port": 9666,
   "endpoint": "http://localhost:9666",
-  "invite_code": "abdullah-lab",
+  "invite_code": "top-sekrit",
 
   "storage_dialect": "sqlite",
 
