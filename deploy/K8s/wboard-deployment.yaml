@@ -4,6 +4,7 @@ metadata:
   name: wbapp-deployment
 spec:
   replicas: 2
+  revisionHistoryLimit: 2
   selector:
     matchLabels:
       app: wbapp
@@ -16,4 +17,4 @@ spec:
       - name: wbapp
         image: 390402557273.dkr.ecr.eu-west-2.amazonaws.com/eks-wboard-nonprod-euw2:wbapp-357 #$(imageUrl) # replace with your Docker image
         ports:
-        - containerPort: 80
+        - containerPort: 9666
