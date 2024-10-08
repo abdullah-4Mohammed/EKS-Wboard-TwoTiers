@@ -1,41 +1,41 @@
 steps:
-- task: Docker@2
-  displayName: Build Docker image
-  inputs:
-    repository: $(imageRepository)/wbapp
-    command: build
-    dockerfile: $(dockerFile)
-    tags: |
-      $(Build.BuildId)
-      latest
+# - task: Docker@2
+#   displayName: Build Docker image
+#   inputs:
+#     repository: $(imageRepository)/wbapp
+#     command: build
+#     dockerfile: $(dockerFile)
+#     tags: |
+#       $(Build.BuildId)
+#       latest
 
-- script: |
-    set -ex
-    docker images
-    echo "buildid $(Build.BuildId)"
-  displayName: 'Display image name'
+# - script: |
+#     set -ex
+#     docker images
+#     echo "buildid $(Build.BuildId)"
+#   displayName: 'Display image name'
 
-- task: ECRPushImage@1
-  displayName: Push to ECR
-  inputs:
-    awsCredentials: $(awsConnection)
-    regionName: $(region)
-    imageSource: 'imagename'
-    sourceImageName: '$(imageRepository)/wbapp'
-    sourceImageTag: '$(Build.BuildId)'   
-    repositoryName: $(imageRepository)
-    pushTag: "wbapp-$(Build.BuildId)"
+# - task: ECRPushImage@1
+#   displayName: Push to ECR
+#   inputs:
+#     awsCredentials: $(awsConnection)
+#     regionName: $(region)
+#     imageSource: 'imagename'
+#     sourceImageName: '$(imageRepository)/wbapp'
+#     sourceImageTag: '$(Build.BuildId)'   
+#     repositoryName: $(imageRepository)
+#     pushTag: "wbapp-$(Build.BuildId)"
 
-- task: ECRPushImage@1
-  displayName: Push to ECR 'latest' tag
-  inputs:
-    awsCredentials: $(awsConnection)
-    regionName: $(region)
-    imageSource: 'imagename'
-    sourceImageName: '$(imageRepository)/wbapp'
-    sourceImageTag: '$(Build.BuildId)'   
-    repositoryName: $(imageRepository)
-    pushTag: latest
+# - task: ECRPushImage@1
+#   displayName: Push to ECR 'latest' tag
+#   inputs:
+#     awsCredentials: $(awsConnection)
+#     regionName: $(region)
+#     imageSource: 'imagename'
+#     sourceImageName: '$(imageRepository)/wbapp'
+#     sourceImageTag: '$(Build.BuildId)'   
+#     repositoryName: $(imageRepository)
+#     pushTag: latest
 
 - task: AWSShellScript@1
   displayName: Update kubeconfig and Deploy to EKS
