@@ -46,5 +46,5 @@ steps:
     inlineScript: |
       set -ex
       aws eks --region $(region) update-kubeconfig --name $(clusterName)
-      kubectl apply -f $(System.DefaultWorkingDirectory)/deploy/K8s/wboard-deployment.yaml
-      kubectl apply -f $(System.DefaultWorkingDirectory)/deploy/K8s/wboard-service.yaml
+      kubectl delete -f $(System.DefaultWorkingDirectory)/deploy/K8s/wboard-deployment.yaml
+      kubectl delete -f $(System.DefaultWorkingDirectory)/deploy/K8s/wboard-service.yaml
