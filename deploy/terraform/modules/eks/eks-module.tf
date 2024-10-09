@@ -29,7 +29,7 @@ resource "aws_security_group" "eks_cluster_sg" {
 
   # Tags for the security group
   tags = {
-    Name = "{var.cluster_name}-eks-sg"
+    Name = "${var.cluster_name}-eks-sg"
   }
 }
 
@@ -63,7 +63,7 @@ resource "aws_security_group" "eks_node_sg" {
 
   # Tags for the security group
   tags = {
-    Name = "{var.cluster_name}-eks-node-sg"
+    Name = "${var.cluster_name}-eks-node-sg"
   }
 }
 
