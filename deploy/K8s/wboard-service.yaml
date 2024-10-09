@@ -2,6 +2,8 @@ apiVersion: v1
 kind: Service
 metadata:
   name: wbapp-service
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-extra-security-groups: sg-038e7bd1053d71ed5
 spec:
   selector:
     app: wbapp
