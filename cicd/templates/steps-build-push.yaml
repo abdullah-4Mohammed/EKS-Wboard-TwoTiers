@@ -48,3 +48,4 @@ steps:
       aws eks --region $(region) update-kubeconfig --name $(clusterName)
       kubectl apply -f $(System.DefaultWorkingDirectory)/deploy/K8s/wboard-deployment.yaml
       kubectl apply -f $(System.DefaultWorkingDirectory)/deploy/K8s/wboard-service.yaml
+      
