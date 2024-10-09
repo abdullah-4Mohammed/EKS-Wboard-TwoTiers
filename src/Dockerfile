@@ -1,33 +1,19 @@
-FROM node:18-alpine
+# Dockerfile
 
+# Use an official Python runtime as a parent image
+FROM python:3.9-slim
+
+# Set the working directory in the container
 WORKDIR /app
 
-# install chromium
-RUN apk add --no-cache \
-    chromium \
-    nss \
-    freetype \
-    freetype-dev \
-    harfbuzz \
-    ca-certificates \
-    ttf-freefont
+# Copy the current directory contents into the container at /app
+COPY . /app
 
-# Tell Puppeteer to skip installing Chrome. We'll be using the installed package.
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
-    PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
+# Install Flask, specified in the requirements
+RUN pip install --no-cache-dir Flask
 
-# install other requirements
+# Expose port 80 for the web app
+EXPOSE 80
 
-RUN apk add graphicsmagick ffmpeg ffmpeg-dev ghostscript
-
-# install node package
-
-COPY package*.json ./
-RUN npm install
-COPY . .
-
-# start app
-
-EXPOSE 9666
-CMD ["node", "spacedeck.js"]
-
+# Run the Flask app
+CMD ["python", "app.py"]
