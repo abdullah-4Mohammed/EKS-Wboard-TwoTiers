@@ -37,6 +37,14 @@ resource "aws_security_group" "eks_cluster_sg" {
 resource "aws_security_group" "eks_node_sg" {
   vpc_id = var.vpc_id
 
+  # Allow HTTP access
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  
   # Allow traffic between nodes in the cluster
   ingress {
     from_port   = 0
