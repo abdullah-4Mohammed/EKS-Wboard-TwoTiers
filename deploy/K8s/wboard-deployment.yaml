@@ -15,6 +15,6 @@ spec:
     spec:
       containers:
       - name: wbapp
-        image: 390402557273.dkr.ecr.eu-west-2.amazonaws.com/eks-wboard-nonprod-euw2:wbapp-360
+        image: 390402557273.dkr.ecr.eu-west-2.amazonaws.com/eks-wboard-nonprod-euw2:wbapp-364
         ports:
-        - containerPort: 80
+        - containerPort: 9666
