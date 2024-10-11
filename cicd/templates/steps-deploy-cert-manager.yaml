@@ -1,0 +1,14 @@
+
+  # Installing cert manager and installing the crds CustomResourceDefinition resources
+  # Before installing the chart, you must first install 
+  # the cert-manager CustomResourceDefinition resources 
+steps:
+  - script: |
+      set -x
+      helm repo add jetstack https://charts.jetstack.io
+      helm repo update
+      kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.12.1/cert-manager.crds.yaml
+      helm upgrade cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace --version v1.12.1 --install
+      kubectl apply -f $(System.DefaultWorkingDirectory)/deploy/infrastructure/secret/cluster-issuer.yaml
+    displayName: 'Install Cert Manager, crd and certificate'
+    
