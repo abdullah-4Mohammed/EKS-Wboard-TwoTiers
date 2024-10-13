@@ -4,12 +4,12 @@ variables:
   backendBucketName: "backend-tfstate"
   backendBucket: "$(serviceName)-$(backendBucketName)-$(environment)-$(regionShortName)"
   regionShortName: euw2
-  serviceName: eks-wboard
+  serviceName: eks-wboard2
   environment: nonprod
   ecrName: "$(serviceName)-$(environment)-$(regionShortName)"
   imageRepository: "eks-wboard-nonprod-euw2"
   dockerFile: "$(System.DefaultWorkingDirectory)/src/Dockerfile"
   dockerRegistryServiceConnection: "ecr-docker-sercon"
-  awsAccountId: "390402557273"
+  awsAccountId: "503561452156"
   clusterName: "eks-wboard-nonprod"
   imageUrl: "$(awsAccountId).dkr.ecr.$(region).amazonaws.com/$(imageRepository):latest"
