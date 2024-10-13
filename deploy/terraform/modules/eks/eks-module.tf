@@ -124,7 +124,7 @@ resource "aws_eks_node_group" "eks_nodes" {
     min_size     = 1
   }
 
-  instance_types = ["t3.micro"]
+  instance_types = ["t3.medium"]
   ami_type       = "AL2_x86_64"
 
   # depends_on = [

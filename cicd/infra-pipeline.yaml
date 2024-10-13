@@ -46,6 +46,7 @@ stages:
 
     - job: Build_Push_Image
       displayName: Build and push docker image
+      dependsOn: Deploy_Terraform
       #condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
       steps:
       - template: templates/steps-build-push.yaml
