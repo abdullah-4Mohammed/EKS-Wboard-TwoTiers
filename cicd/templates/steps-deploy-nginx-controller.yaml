@@ -8,17 +8,17 @@ steps:
 
 
   - task: AWSShellScript@1
-  displayName: Deploy NGINX Ingress Controller
-  inputs:
-    awsCredentials: '$(awsConnection)'
-    regionName: '$(region)'
-    scriptType: 'inline'
-    inlineScript: |
-      set -ex
-      aws eks --region $(region) update-kubeconfig --name $(clusterName)
-      helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
-      helm repo update
-      helm upgrade ingress-nginx ingress-nginx/ingress-nginx --create-namespace -n ingress-nginx --install --set controller.service.externalTrafficPolicy=Local
+    displayName: Deploy NGINX Ingress Controller
+    inputs:
+      awsCredentials: '$(awsConnection)'
+      regionName: '$(region)'
+      scriptType: 'inline'
+      inlineScript: |
+        set -ex
+        aws eks --region $(region) update-kubeconfig --name $(clusterName)
+        helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+        helm repo update
+        helm upgrade ingress-nginx ingress-nginx/ingress-nginx --create-namespace -n ingress-nginx --install --set controller.service.externalTrafficPolicy=Local
 
   - task: AWSShellScript@1
     displayName: 'Deploy Ingress'
