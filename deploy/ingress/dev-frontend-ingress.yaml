@@ -5,7 +5,7 @@ metadata:
   name: ingress-frontend
 spec:
   rules:
-  - host: wbapp.test.com
+  - host: wbapp.test.dv
     http:
       paths:
       - pathType: Prefix
@@ -16,3 +16,4 @@ spec:
             port: 
               number: 80
   ingressClassName: nginx
+  

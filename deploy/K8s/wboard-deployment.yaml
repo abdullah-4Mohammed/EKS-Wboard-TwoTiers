@@ -17,4 +17,4 @@ spec:
       - name: wbapp
         image: 503561452156.dkr.ecr.eu-west-2.amazonaws.com/eks-wboard2-nonprod-euw2:latest
         ports:
-        - containerPort: 9666
+        - containerPort: 80
