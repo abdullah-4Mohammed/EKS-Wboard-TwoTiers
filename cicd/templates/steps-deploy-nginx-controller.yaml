@@ -29,5 +29,5 @@ steps:
       inlineScript: |
         set -ex
         aws eks --region $(region) update-kubeconfig --name $(clusterName)
-        kubectl apply -f $(System.DefaultWorkingDirectory)/deploy/ingress/dev-frontend-ingress.yaml
+        kubectl delete -f $(System.DefaultWorkingDirectory)/deploy/ingress/dev-frontend-ingress.yaml
 
