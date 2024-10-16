@@ -1,4 +1,4 @@
- steps:
+steps:
 - task: AWSShellScript@1
   displayName: Deploy webapp to EKS
   inputs:
