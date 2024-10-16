@@ -50,5 +50,19 @@ stages:
       #condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
       steps:
       - template: templates/steps-build-push.yaml
-      #task for deploying inginx controller and ingress
+
+    - job: Deploy_WebApp
+      displayName: Deploy webapp to EKS
+      dependsOn: Deploy_Terraform
+      #condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+      steps:
+      - template: templates/steps-deploy-webapp.yaml
+
+    - job: Deploy_Nginx_Controller
+      displayName: Deploy Nginx Controller and Ingress
+      dependsOn: Deploy_Terraform
+      #condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+      steps:
       - template: templates/steps-deploy-nginx-controller.yaml
+      # deploy cert-manager
+      - template: templates/steps-deploy-cert-manager.yaml

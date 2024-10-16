@@ -1,11 +1,21 @@
-#inginx ingress
+  
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ingress-frontend
+  namespace: default
+  labels:
+    name: ingress-frontend
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-staging"  # Use letsencrypt for production
 spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - dv.a7-cloud.org # Subdomain
+    secretName: letsencry-stage-dv-a7-cloud-cert # Secret to store the generated certificate for subdomain
   rules:
-  - host: wbapp.test.dv
+  - host: dv.a7-cloud.org
     http:
       paths:
       - pathType: Prefix
@@ -15,5 +25,23 @@ spec:
             name: wbapp-service
             port: 
               number: 80
-  ingressClassName: nginx
-  
+
+
+#inginx ingress
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: ingress-frontend
+# spec:
+#   rules:
+#   - host: wbapp.test.dv
+#     http:
+#       paths:
+#       - pathType: Prefix
+#         path: "/"
+#         backend:
+#           service:
+#             name: wbapp-service
+#             port: 
+#               number: 80
+#   ingressClassName: nginx
