@@ -20,5 +20,5 @@ steps:
           helm repo update
           kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.12.1/cert-manager.crds.yaml
           helm upgrade cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace --version v1.12.1 --install
-          kubectl delete -f $(System.DefaultWorkingDirectory)/deploy/secret/cluster-issuer.yaml
+          kubectl apply -f $(System.DefaultWorkingDirectory)/deploy/secret/cluster-issuer.yaml
     
