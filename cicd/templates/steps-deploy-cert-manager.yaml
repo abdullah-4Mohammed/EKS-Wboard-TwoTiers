@@ -2,7 +2,7 @@
   # Installing cert manager and installing the crds CustomResourceDefinition resources
   # Before installing the chart, you must first install 
   # the cert-manager CustomResourceDefinition resources 
- steps:
+steps:
 - task: HelmInstaller@0
   displayName: 'Install Helm'
   inputs:
