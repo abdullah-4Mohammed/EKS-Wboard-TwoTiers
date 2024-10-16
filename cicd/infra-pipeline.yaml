@@ -60,7 +60,7 @@ stages:
 
     - job: Deploy_Nginx_Controller
       displayName: Deploy Nginx Controller and Ingress
-      dependsOn: Deploy_Terraform
+      #dependsOn: Deploy_Terraform
       #condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
       steps:
       - template: templates/steps-deploy-nginx-controller.yaml
