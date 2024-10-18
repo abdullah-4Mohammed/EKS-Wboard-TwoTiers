@@ -70,6 +70,6 @@ steps:
     regionName: $(region)
     imageSource: 'imagename'
     sourceImageName: '$(imageRepository)/frontend'
-    sourceImageTag: '$(Build.BuildId)'   
+    sourceImageTag: '$(Build.BuildId)'  
     repositoryName: $(imageRepository)
     pushTag: frontend-latest
