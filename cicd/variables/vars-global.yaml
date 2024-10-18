@@ -8,8 +8,8 @@ variables:
   environment: nonprod
   ecrName: "$(serviceName)-$(environment)-$(regionShortName)"
   imageRepository: "$(serviceName)-nonprod-euw2"
-  dockerFile_Backend: "$(System.DefaultWorkingDirectory)/src/backend/"
-  dockerFile_Frontend: "$(System.DefaultWorkingDirectory)/src/frontend/"
+  dockerFile_Backend: "$(System.DefaultWorkingDirectory)/src/backend/Dockerfile"
+  dockerFile_Frontend: "$(System.DefaultWorkingDirectory)/src/frontend/Dockerfile"
   dockerRegistryServiceConnection: "ecr-docker-sercon"
   awsAccountId: "503561452156"
   clusterName: "eks-wboard-nonprod"
