@@ -1,53 +1,75 @@
 steps:
-
 - task: Docker@2
-  displayName: Build Docker images from Docker Compose
+  displayName: Build backend contgainer
   inputs:
-    repository: $(imageRepository)/wbapp
-    command: 'compose up'
-    dockerComposeFile: $(dockerFile)  # Provide the correct path to your Docker Compose file
-    services: 'mongodb, backend, frontend'           # Specify your services if needed
-    buildImages: true
+    repository: $(imageRepository)/backend
+    command: build
+    dockerfile: $(dockerFile_Backend)
     tags: |
       $(Build.BuildId)
-      latest
 
-# - task: Docker@2
-#   displayName: Build Docker image
-#   inputs:
-#     repository: $(imageRepository)/wbapp
-#     command: build
-#     dockerfile: $(dockerFile)
-#     tags: |
-#       $(Build.BuildId)
-#       latest
+- script: |
+    set -ex
+    docker images
+    echo "buildid $(Build.BuildId)"
+  displayName: 'Display image name'
 
-# - script: |
-#     set -ex
-#     docker images
-#     echo "buildid $(Build.BuildId)"
-#   displayName: 'Display image name'
+- task: ECRPushImage@1
+  displayName: Push backend to ECR
+  inputs:
+    awsCredentials: $(awsConnection)
+    regionName: $(region)
+    imageSource: 'imagename'
+    sourceImageName: '$(imageRepository)/backend'
+    sourceImageTag: '$(Build.BuildId)'   
+    repositoryName: $(imageRepository)
+    pushTag: "backend-$(Build.BuildId)"
 
-# - task: ECRPushImage@1
-#   displayName: Push to ECR
-#   inputs:
-#     awsCredentials: $(awsConnection)
-#     regionName: $(region)
-#     imageSource: 'imagename'
-#     sourceImageName: '$(imageRepository)/wbapp'
-#     sourceImageTag: '$(Build.BuildId)'   
-#     repositoryName: $(imageRepository)
-#     pushTag: "wbapp-$(Build.BuildId)"
+- task: ECRPushImage@1
+  displayName: Push to ECR 'latest' tag
+  inputs:
+    awsCredentials: $(awsConnection)
+    regionName: $(region)
+    imageSource: 'imagename'
+    sourceImageName: '$(imageRepository)/backend'
+    sourceImageTag: '$(Build.BuildId)'   
+    repositoryName: $(imageRepository)
+    pushTag: backend-latest
 
-# - task: ECRPushImage@1
-#   displayName: Push to ECR 'latest' tag
-#   inputs:
-#     awsCredentials: $(awsConnection)
-#     regionName: $(region)
-#     imageSource: 'imagename'
-#     sourceImageName: '$(imageRepository)/wbapp'
-#     sourceImageTag: '$(Build.BuildId)'   
-#     repositoryName: $(imageRepository)
-#     pushTag: latest
+#frontend
+- task: Docker@2
+  displayName: Build frontend Docker image
+  inputs:
+    repository: $(imageRepository)/frontend
+    command: build
+    dockerfile: $(dockerFile_Frontend)
+    tags: |
+      $(Build.BuildId)
 
- 
+- script: |
+    set -ex
+    docker images
+    echo "buildid $(Build.BuildId)"
+  displayName: 'Display image name'
+
+- task: ECRPushImage@1
+  displayName: Push fronetend to ECR
+  inputs:
+    awsCredentials: $(awsConnection)
+    regionName: $(region)
+    imageSource: 'imagename'
+    sourceImageName: '$(imageRepository)/frontend'
+    sourceImageTag: '$(Build.BuildId)'   
+    repositoryName: $(imageRepository)
+    pushTag: "frontend-$(Build.BuildId)"
+
+- task: ECRPushImage@1
+  displayName: Push to ECR 'latest' tag
+  inputs:
+    awsCredentials: $(awsConnection)
+    regionName: $(region)
+    imageSource: 'imagename'
+    sourceImageName: '$(imageRepository)/frontend'
+    sourceImageTag: '$(Build.BuildId)'   
+    repositoryName: $(imageRepository)
+    pushTag: frontend-latest
