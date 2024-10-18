@@ -58,7 +58,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: <your-backend-image> # Replace with your actual backend image
+          image: 503561452156.dkr.ecr.eu-west-2.amazonaws.com/eks-wboard2-nonprod-euw2:backend-latest
           env:
             - name: MONGO_URI
               value: "mongodb://root:asdasd@mongodb-service"
@@ -107,7 +107,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: <your-frontend-image> # Replace with your actual frontend image
+          image: 503561452156.dkr.ecr.eu-west-2.amazonaws.com/eks-wboard2-nonprod-euw2:frontend-latest
           env:
             - name: API_URL
               value: "http://backend-service:3001/"
@@ -133,27 +133,25 @@ spec:
   selector:
     app: frontend
   type: ClusterIP
-
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: frontend-ingress
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
+  name: ingress-frontend
 spec:
   rules:
-    - host: <your-domain> # Replace with your actual domain or use a local IP
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: frontend-service
-                port:
-                  number: 5000
-
+  - host: wbapp.test.dv
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: frontend-service
+            port: 
+              number: 80
+  ingressClassName: nginx
+  
 # apiVersion: apps/v1
 # kind: Deployment
 # metadata:

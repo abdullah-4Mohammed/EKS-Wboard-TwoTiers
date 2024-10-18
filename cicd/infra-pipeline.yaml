@@ -44,19 +44,19 @@ stages:
     #   steps:
     #   - template: templates/steps-deploy-tf.yaml
 
-    - job: Build_Push_Image
-      displayName: Build and push docker image
+    # - job: Build_Push_Image
+    #   displayName: Build and push docker image
+    #   #dependsOn: Deploy_Terraform
+    #   #condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    #   steps:
+    #   - template: templates/steps-build-push.yaml
+
+    - job: Deploy_WebApp
+      displayName: Deploy webapp to EKS
       #dependsOn: Deploy_Terraform
       #condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
       steps:
-      - template: templates/steps-build-push.yaml
-
-    # - job: Deploy_WebApp
-    #   displayName: Deploy webapp to EKS
-    #   dependsOn: Deploy_Terraform
-    #   #condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
-    #   steps:
-    #   - template: templates/steps-deploy-webapp.yaml
+      - template: templates/steps-deploy-webapp.yaml
 
     # - job: Deploy_Nginx_Controller
     #   displayName: Deploy Nginx Controller and Ingress
