@@ -4,7 +4,7 @@ steps:
   displayName: Build Docker images from Docker Compose
   inputs:
     repository: $(imageRepository)/wbapp
-    command: 'compose up -f'
+    command: 'compose up'
     dockerComposeFile: $(dockerFile)  # Provide the correct path to your Docker Compose file
     services: 'mongodb, backend, frontend'           # Specify your services if needed
     buildImages: true
