@@ -1,12 +1,12 @@
-apiVersion: v1
-kind: Service
-metadata:
-  name: wbapp-service
-spec:
-  selector:
-    app: wbapp
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 80
-  type: ClusterIP
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: wbapp-service
+# spec:
+#   selector:
+#     app: wbapp
+#   ports:
+#     - protocol: TCP
+#       port: 80
+#       targetPort: 80
+#   type: ClusterIP
