@@ -18,6 +18,7 @@ spec:
       containers:
         - name: mongodb
           image: mongo:latest
+          command: ["mongod", "--bind_ip", "0.0.0.0"]
           env:
             - name: MONGO_INITDB_ROOT_USERNAME
               value: "root"
