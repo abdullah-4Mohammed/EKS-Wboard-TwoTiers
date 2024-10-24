@@ -10,7 +10,7 @@ ENV API_URL='http://wbapp.test.dv:3001/'
 ENV SOCKET_URL='http://wbapp.test.dv:3001/'
 
 # Frontend Host
-ENV FRONTEND_HOST='http://wbapp.test.dv:5000'
+ENV FRONTEND_HOST='http://wbapp.test.dv:5000/'
 
 # Copy Needed Files for Dependencies
 COPY package.json ./package.json

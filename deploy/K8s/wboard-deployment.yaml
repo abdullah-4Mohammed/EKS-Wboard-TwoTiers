@@ -24,7 +24,7 @@ spec:
             - name: SOCKET_URL
               value: "http://wbapp.test.dv:3001/"
             - name: FRONTEND_HOST
-              value: "http://wbapp.test.dv:5000"
+              value: "http://wbapp.test.dv:5000/"
             - name: NUXT_HOST
               value: "0.0.0.0"
             - name: NUXT_PORT
