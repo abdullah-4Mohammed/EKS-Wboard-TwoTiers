@@ -8,4 +8,4 @@ spec:
       targetPort: 3001
   selector:
     app: backend
-  type: ClusterIP
+  type: LoadBalancer #ClusterIP
