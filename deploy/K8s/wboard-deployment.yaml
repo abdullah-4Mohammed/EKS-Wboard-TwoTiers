@@ -20,7 +20,7 @@ spec:
           image: 503561452156.dkr.ecr.eu-west-2.amazonaws.com/eks-wboard2-nonprod-euw2:frontend-latest
           env:
             - name: API_URL
-              value:  "http://backend-srvice:3001/ #"http://wbapp.test.dv:3001/"
+              value:  "http://backend-srvice:3001/" #"http://wbapp.test.dv:3001/"
             - name: SOCKET_URL
               value: "http://backend-srvice:3001/"
             - name: FRONTEND_HOST
