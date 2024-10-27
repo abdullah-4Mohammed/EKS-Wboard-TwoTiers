@@ -1,28 +1,69 @@
 apiVersion: apps/v1
 kind: Deployment
-metadata:
+metadata: 
+  namespace: three-tier
   name: mongodb
-  labels:
-    app: mongodb
-spec:
+spec: 
   replicas: 1
-  revisionHistoryLimit: 1
   selector:
     matchLabels:
       app: mongodb
   template:
     metadata:
-      labels:
+      labels: 
         app: mongodb
-    spec:
+    spec: 
       containers:
-        - name: mongodb
-          image: mongo:latest
-          command: ["mongod", "--bind_ip", "0.0.0.0"]
-          env:
-            - name: MONGO_INITDB_ROOT_USERNAME
-              value: "root"
-            - name: MONGO_INITDB_ROOT_PASSWORD
-              value: "asdasd"
-          ports:
-            - containerPort: 27017
+      - name: mon
+        image: mongo:4.4.6
+        command:
+            - "numactl"
+            - "--interleave=all"
+            - "mongod"
+            - "--wiredTigerCacheSizeGB"
+            - "0.1"
+            - "--bind_ip"
+            - "0.0.0.0"
+        ports:
+        - containerPort: 27017
+        env: 
+          - name: MONGO_INITDB_ROOT_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: mongo-sec
+                key: username
+          - name: MONGO_INITDB_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mongo-sec
+                key: password
+
+
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: mongodb
+#   labels:
+#     app: mongodb
+# spec:
+#   replicas: 1
+#   revisionHistoryLimit: 1
+#   selector:
+#     matchLabels:
+#       app: mongodb
+#   template:
+#     metadata:
+#       labels:
+#         app: mongodb
+#     spec:
+#       containers:
+#         - name: mongodb
+#           image: mongo:latest
+#           command: ["mongod", "--bind_ip", "0.0.0.0"]
+#           env:
+#             - name: MONGO_INITDB_ROOT_USERNAME
+#               value: root
+#             - name: MONGO_INITDB_ROOT_PASSWORD
+#               value: asdasd
+#           ports:
+#             - containerPort: 27017

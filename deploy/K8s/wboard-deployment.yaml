@@ -2,32 +2,69 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: frontend
+  namespace: three-tier
   labels:
-    app: frontend
-spec:
+    role: frontend
+    env: demo
+spec: 
   replicas: 1
-  revisionHistoryLimit: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 25%
   selector:
-    matchLabels:
-      app: frontend
+    matchLabels: 
+      role: frontend
   template:
     metadata:
       labels:
-        app: frontend
-    spec:
+        role: frontend
+    spec: 
+      imagePullSecrets:
+      - name: ecr-registry-secret
       containers:
-        - name: frontend
-          image: 503561452156.dkr.ecr.eu-west-2.amazonaws.com/eks-wboard2-nonprod-euw2:frontend-latest
-          env:
-            - name: API_URL
-              value:  "http://wbapp.test.dv/whiteboard/" #"http://wbapp.test.dv:3001/"
-            - name: SOCKET_URL
-              value: "http://wbapp.test.dv/whiteboard/" #"http://backend-service:3001/" 
-            - name: FRONTEND_HOST
-              value: "http://wbapp.test.dv"
-            - name: NUXT_HOST
-              value: "0.0.0.0"
-            - name: NUXT_PORT
-              value: "5000"
-          ports:
-            - containerPort: 5000
+      - name: frontend
+        image: public.ecr.aws/n9n3l1v4/three-tie-frontend:latest
+        imagePullPolicy: Always
+        env:
+          - name: REACT_APP_BACKEND_URL
+            value: "http://challenge.ganeshsnp.shop/api/tasks"
+        ports:
+        - containerPort: 3000
+
+
+
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: frontend
+#   labels:
+#     app: frontend
+# spec:
+#   replicas: 1
+#   revisionHistoryLimit: 1
+#   selector:
+#     matchLabels:
+#       app: frontend
+#   template:
+#     metadata:
+#       labels:
+#         app: frontend
+#     spec:
+#       containers:
+#         - name: frontend
+#           image: 503561452156.dkr.ecr.eu-west-2.amazonaws.com/eks-wboard2-nonprod-euw2:frontend-latest
+#           env:
+#             - name: API_URL
+#               value:  "http://wbapp.test.dv/whiteboard/" #"http://wbapp.test.dv:3001/"
+#             - name: SOCKET_URL
+#               value: "http://wbapp.test.dv/whiteboard/" #"http://backend-service:3001/" 
+#             - name: FRONTEND_HOST
+#               value: "http://wbapp.test.dv"
+#             - name: NUXT_HOST
+#               value: "0.0.0.0"
+#             - name: NUXT_PORT
+#               value: "5000"
+#           ports:
+#             - containerPort: 5000

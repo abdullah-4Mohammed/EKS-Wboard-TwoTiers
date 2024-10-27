@@ -1,31 +1,89 @@
 apiVersion: apps/v1
 kind: Deployment
-metadata:
-  name: backend
-  labels:
-    app: backend
-spec:
+metadata: 
+  name: api
+  namespace: three-tier
+  labels: 
+    role: api
+    env: demo
+spec: 
   replicas: 1
-  revisionHistoryLimit: 1
-  selector:
+  strategy: 
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 25%
+  selector: 
     matchLabels:
-      app: backend
+      role: api
   template:
     metadata:
       labels:
-        app: backend
+        role: api
     spec:
+      imagePullSecrets:
+      - name: ecr-registry-secret
       containers:
-        - name: backend
-          image: 503561452156.dkr.ecr.eu-west-2.amazonaws.com/eks-wboard2-nonprod-euw2:backend-latest
-          env:
-            - name: MONGO_URI
-              value: mongodb://root:asdasd@mongodb-service:27017/backend?directConnection=true #"mongodb://root:asdasd@mongodb-service"
-            - name: MONGO_DBNAME
-              value: "backend"
-            - name: APP_BACKEND_PORT
-              value: "3001"
-            - name: APP_JOINCODE_LENGTH
-              value: "8"
-          ports:
-            - containerPort: 3001
+      - name: api
+        image: public.ecr.aws/n9n3l1v4/three-tier-backend:latest
+        imagePullPolicy: Always
+        env:
+          - name: MONGO_CONN_STR
+            value: mongodb://mongodb-svc:27017/todo?directConnection=true
+          - name: MONGO_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: mongo-sec
+                key: username
+          - name: MONGO_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mongo-sec
+                key: password
+        ports:
+        - containerPort: 3500
+        livenessProbe: 
+          httpGet:
+            path: /ok
+            port: 3500
+          initialDelaySeconds: 2
+          periodSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /ok
+            port: 3500
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          successThreshold: 1
+
+
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: backend
+#   labels:
+#     app: backend
+# spec:
+#   replicas: 1
+#   revisionHistoryLimit: 1
+#   selector:
+#     matchLabels:
+#       app: backend
+#   template:
+#     metadata:
+#       labels:
+#         app: backend
+#     spec:
+#       containers:
+#         - name: backend
+#           image: 503561452156.dkr.ecr.eu-west-2.amazonaws.com/eks-wboard2-nonprod-euw2:backend-latest
+#           env:
+#             - name: MONGO_URI
+#               value: mongodb://root:asdasd@mongodb-service:27017/backend?directConnection=true 
+#             - name: MONGO_DBNAME
+#               value: "backend"
+#             - name: APP_BACKEND_PORT
+#               value: "3001"
+            
+#           ports:
+#             - containerPort: 3001
