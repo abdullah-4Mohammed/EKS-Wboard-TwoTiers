@@ -1,8 +1,9 @@
 /* eslint-disable no-template-curly-in-string */
 export default {
   server: {
-    host: process.env.NUXT_HOST,
     port: process.env.NUXT_PORT,
+    host: process.env.NUXT_HOST,
+
   },
 
   // Target (https://go.nuxtjs.dev/config-target)
@@ -28,11 +29,10 @@ export default {
     exclude: [/^\/share/], // Path starts with Share
   },
 
-  // Modified section: This env block will allow Kubernetes to pass environment variables at runtime
   env: {
-    API_URL: process.env.API_URL, // Using API_URL from Kubernetes
-    SOCKET_URL: process.env.SOCKET_URL, // Using SOCKET_URL from Kubernetes
-    FRONTEND_HOST: process.env.FRONTEND_HOST, // Using FRONTEND_HOST from Kubernetes
+    FRONTEND_HOST: process.env.FRONTEND_HOST,
+    SOCKET_URL: process.env.SOCKET_URL,
+    API_URL: process.env.API_URL,
     NUXT_HOST: process.env.NUXT_HOST,
     NUXT_PORT: process.env.NUXT_PORT,
   },

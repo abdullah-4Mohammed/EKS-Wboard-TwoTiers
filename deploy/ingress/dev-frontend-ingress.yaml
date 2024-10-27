@@ -11,7 +11,7 @@ spec:
     http:
       paths:
       - pathType: Prefix
-        path: "/whiteboard"
+        path: "/whiteboard(/|$)(.*)" # Regex to match /whiteboard and /whiteboard/ and /whiteboard/anything
         backend:
           service:
             name: backend-service
