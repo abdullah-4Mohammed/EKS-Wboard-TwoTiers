@@ -25,5 +25,7 @@ spec:
               value: "backend"
             - name: APP_BACKEND_PORT
               value: "3001"
+            - name: APP_JOINCODE_LENGTH
+              value: "8"
           ports:
             - containerPort: 3001

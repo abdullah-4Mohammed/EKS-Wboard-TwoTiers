@@ -8,4 +8,4 @@ spec:
       targetPort: 5000
   selector:
     app: frontend
-  type: LoadBalancer #ClusterIP
+  type: ClusterIP #LoadBalancer #ClusterIP
