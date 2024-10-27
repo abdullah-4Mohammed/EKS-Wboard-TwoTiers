@@ -65,4 +65,4 @@ stages:
       steps:
       - template: templates/steps-deploy-nginx-controller.yaml
       # deploy cert-manager
-      - template: templates/steps-deploy-cert-manager.yaml
+      #- template: templates/steps-deploy-cert-manager.yaml

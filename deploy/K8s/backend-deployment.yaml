@@ -20,7 +20,7 @@ spec:
           image: 503561452156.dkr.ecr.eu-west-2.amazonaws.com/eks-wboard2-nonprod-euw2:backend-latest
           env:
             - name: MONGO_URI
-              value: "mongodb://root:asdasd@mongodb-service"
+              value: mongodb://root:asdasd@mongodb-service:27017/backend?directConnection=true #"mongodb://root:asdasd@mongodb-service"
             - name: MONGO_DBNAME
               value: "backend"
             - name: APP_BACKEND_PORT

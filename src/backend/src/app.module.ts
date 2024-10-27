@@ -8,7 +8,7 @@ import { MongoProviderModule } from './providers/mongoProvider.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: 'src/config/.env'
+      //envFilePath: 'src/config/.env'
     }),
     MongoProviderModule,
     WhiteboardModule,
