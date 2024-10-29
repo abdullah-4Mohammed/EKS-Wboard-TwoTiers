@@ -19,6 +19,9 @@ steps:
 
       kubectl apply -f $(System.DefaultWorkingDirectory)/deploy/K8s/secrets.yaml
 
+      kubectl apply -f $(System.DefaultWorkingDirectory)/deploy/K8s/pvc.yaml
+      kubectl apply -f $(System.DefaultWorkingDirectory)/deploy/K8s/pv.yaml
+
 
      
 
