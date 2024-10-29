@@ -37,6 +37,13 @@ spec:
               secretKeyRef:
                 name: mongo-sec
                 key: password
+        volumeMounts:
+        - name: mongo-pvs
+          mountPath: /data/db
+      volumes:
+      - name: mongo-pvs
+        persistentVolumeClaim:
+          claimName: mongo-pvc
 
 
 # apiVersion: apps/v1
