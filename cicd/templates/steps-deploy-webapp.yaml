@@ -8,7 +8,7 @@ steps:
     inlineScript: |
       set -ex
       aws eks --region $(region) update-kubeconfig --name $(clusterName)
-      kubectl delete -f $(System.DefaultWorkingDirectory)/deploy/K8s/mongodb-deployment.yaml
+      kubectl apply -f $(System.DefaultWorkingDirectory)/deploy/K8s/mongodb-deployment.yaml
       kubectl apply -f $(System.DefaultWorkingDirectory)/deploy/K8s/mongodb-service.yaml
       
       kubectl apply -f $(System.DefaultWorkingDirectory)/deploy/K8s/backend-deployment.yaml
